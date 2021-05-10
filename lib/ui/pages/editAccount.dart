@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 
 class EditAccount extends StatefulWidget {

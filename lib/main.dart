@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:quizapp/repository/apiconfiguration.dart';
-import 'package:quizapp/testCardValidate.dart';
-import 'package:quizapp/ui/constant/constant.dart' as globals;
+import 'package:quizapp/ui/pages/Reset%20Password/add_mail.dart';
+import 'package:quizapp/ui/pages/Reset%20Password/otp.dart';
+import 'package:quizapp/ui/pages/Reset%20Password/reset_password.dart';
 import 'package:quizapp/ui/pages/account.dart';
 import 'package:quizapp/ui/pages/addCredit.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
@@ -18,7 +19,6 @@ import 'package:quizapp/ui/pages/questionSubmitpage.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
 import 'package:quizapp/ui/pages/settings.dart';
 import 'package:quizapp/ui/pages/signup.dart';
-import 'package:quizapp/ui/pages/splashScreen.dart';
 import 'package:quizapp/ui/widgets/bottomNavBar.dart';
 import 'package:flutter/services.dart';
 
@@ -29,7 +29,6 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   await GlobalConfiguration().loadFromAsset("configuration");
   getApiLink();
-  //globals.url = "";
   runApp(MyApp());
 }
 
@@ -45,7 +44,6 @@ class MyApp extends StatelessWidget {
         fontFamily: "Montserrat",
         buttonColor: Colors.blueAccent[300],
         buttonTheme: ButtonThemeData(
-         
           buttonColor: Colors.blueAccent[300],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
@@ -53,9 +51,7 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-       home: AuthenticationPage(),
-       //TestCardValidat(),
-     // home: CreditHistory(),
+      home: AuthenticationPage(),
       routes: {
         MyBottomNavigationBar.routeName: (ctx) => MyBottomNavigationBar(),
         Leaderboard.routeName: (ctx) => Leaderboard(),
@@ -73,7 +69,21 @@ class MyApp extends StatelessWidget {
         QuizSubmitPage.routeName: (ctx) => QuizSubmitPage(),
         EditAccount.routeNamne: (ctx) => EditAccount(),
         ChangePassword.routeName: (ctx) => ChangePassword(),
+        AddMail.routeName: (ctx) => AddMail(),
+        Otp.routeName: (ctx) => Otp(),
+        ResetPassword.routeName: (ctx) => ResetPassword(),
       },
+      builder: (context, child) =>
+          ScrollConfiguration(behavior: AppBehavior(), child: child),
     );
+  }
+}
+
+class AppBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    // TODO: implement buildViewportChrome
+    return child;
   }
 }

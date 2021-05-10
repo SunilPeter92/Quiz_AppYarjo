@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizapp/repository/apiconfiguration.dart';
-import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/home.dart';
 import 'package:quizapp/ui/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';

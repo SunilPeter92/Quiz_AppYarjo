@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:quizapp/repository/categoryrepository.dart';
 import 'package:quizapp/resources/api_provider.dart';
 import 'package:quizapp/ui/Model/GetQuizbyID.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
-import 'package:quizapp/ui/pages/dummyquizPage/quizpagee.dart';
 import 'package:quizapp/ui/pages/error.dart';
 import 'package:quizapp/ui/pages/quiz_page.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,6 +16,7 @@ import 'package:shimmer/shimmer.dart';
 class QuizDetailPage extends StatefulWidget {
   static const routeName = 'quiz-detail-page';
   var userid;
+
   QuizDetailPage({Key key, this.userid}) : super(key: key);
 
   @override
@@ -26,7 +25,7 @@ class QuizDetailPage extends StatefulWidget {
 
 class _QuizDetailPageState extends State<QuizDetailPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<Category> newcategories = <Category>[];
+  List<Category> newCategory = <Category>[];
   bool processing;
 
   @override
@@ -38,10 +37,10 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
 
   void fetchMainCategories() async {
     final _category = await getCategories();
-    if (categories != null) {
+    if (categories.length <= 0) {
       // categories.add(Category(mainCategory: _categories));
       for (int i = 0; i < _category.length; i++) {
-        newcategories = _category;
+        newCategory = _category;
       }
 
       setState(() {});
@@ -69,56 +68,48 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
         ),
       ),
       body: SingleChildScrollView(
-          child: Container(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  color: tintorange,
-                  height: 50,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(50),
+        child: Container(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    color: tintorange,
+                    height: 50,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(50),
+                          ),
                         ),
                       ),
-                    ),
-                    FutureBuilder<GetQuizByID>(
+                      FutureBuilder<GetQuizByID>(
                         future: API.getQuizDetail(widget.userid),
                         builder: (context, snapshot) {
-
-
                           GetQuizByID getQuiz = snapshot.data;
 
-
                           if (snapshot.hasData) {
-                            return  Column(
+                            return Column(
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      top: 0,
-                                      bottom: 10,
-                                      right: 20,
-                                      left: 20),
+                                      top: 0, bottom: 10, right: 20, left: 20),
                                   child: ClipRRect(
-                                    borderRadius:
-                                    BorderRadius.circular(8.0),
+                                    borderRadius: BorderRadius.circular(8.0),
                                     child: CachedNetworkImage(
                                       imageUrl:
-                                      "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                                          "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
                                       fit: BoxFit.fitHeight,
                                       placeholder: (context, url) => Center(
                                           child:
-                                          new CircularProgressIndicator()),
-                                      errorWidget:
-                                          (context, url, error) =>
-                                      new Icon(Icons.error),
+                                              new CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) =>
+                                          new Icon(Icons.error),
                                     ),
                                   ),
                                 ),
@@ -131,30 +122,18 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text(
-                                       " Name : ${ getQuiz.dataByID[0].name }",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        " Prize : ${getQuiz.dataByID[0].prize }" ,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        " Price : ${getQuiz.dataByID[0].price }" ,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        " Price : ${getQuiz.dataByID[0].catName }" ,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                      QuizInfoBox(
+                                          val: 'Name',
+                                          data: getQuiz.dataByID[0].name),
+                                      QuizInfoBox(
+                                          val: 'Prize',
+                                          data: getQuiz.dataByID[0].prize),
+                                      QuizInfoBox(
+                                          val: 'Price',
+                                          data: getQuiz.dataByID[0].price),
+                                      QuizInfoBox(
+                                          val: 'Category',
+                                          data: getQuiz.dataByID[0].catName),
                                     ],
                                   ),
                                 ),
@@ -165,8 +144,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                     padding: EdgeInsets.all(20),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius:
-                                      BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10),
                                       shape: BoxShape.rectangle,
                                       border: Border.all(
                                           color: tintorange, width: 2),
@@ -204,19 +182,19 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                   child: Column(
                                     children: [
                                       Text(
-                                        "Number of questions: ${ getQuiz.dataByID[0].noOfQues}",
+                                        "Number of questions: ${getQuiz.dataByID[0].noOfQues}",
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600),
                                       ),
                                       Text(
-                                        "Time to answer : ${ getQuiz.dataByID[0].time}",
+                                        "Time to answer : ${getQuiz.dataByID[0].time}",
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600),
                                       ),
                                       AutoSizeText(
-                                        "The quiz will be activated on the ${ getQuiz.dataByID[0].actTime}",
+                                        "The quiz will be activated on the ${getQuiz.dataByID[0].actTime}",
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600),
@@ -232,43 +210,46 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
 
                           // By default, show a loading spinner
                           return Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.white,
-                              child: Container(
-                                color: Colors.black,
-                                height: MediaQuery.of(context).size.height,
-                              ));
-                        }),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          RaisedButton(
-                            onPressed: _startQuiz,
-                            // onPressed: () {
-                            //   Navigator.of(context).pushNamed(DummyQuizPage.routeName);
-                            // },
-                            child: Text(
-                              "Pay (5\$)",
+                            baseColor: Colors.grey[300],
+                            highlightColor: Colors.white,
+                            child: Container(
+                              color: Colors.black,
+                              height: MediaQuery.of(context).size.height,
                             ),
-                          ),
-                          RaisedButton(
-                            onPressed: () {},
-                            child: Text(
-                              "Home",
-                            ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ],
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            RaisedButton(
+                              onPressed: _startQuiz,
+                              // onPressed: () {
+                              //   Navigator.of(context).pushNamed(DummyQuizPage.routeName);
+                              // },
+                              child: Text(
+                                "Pay (5\$)",
+                              ),
+                            ),
+                            RaisedButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Home",
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 
@@ -314,5 +295,29 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
     setState(() {
       processing = false;
     });
+  }
+}
+
+class QuizInfoBox extends StatelessWidget {
+  final String val, data;
+
+  QuizInfoBox({@required this.val, this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    var style = TextStyle(fontSize: 15, fontWeight: FontWeight.w600);
+
+    return ListTile(
+      dense: true,
+      leading: Text(
+        val,
+        style: style,
+      ),
+      trailing: Text(
+        data,
+        style: style,
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 60),
+    );
   }
 }

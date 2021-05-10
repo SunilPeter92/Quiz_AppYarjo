@@ -1,12 +1,8 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-
-import 'package:quizapp/models/category.dart';
 import 'package:quizapp/models/question.dart';
 import 'package:quizapp/ui/widgets/countdowntimerWidget.dart';
-import 'package:quizapp/ui/widgets/questionwithaudio.dart';
 import 'package:quizapp/ui/widgets/questionwithpicture.dart';
-import 'package:quizapp/ui/widgets/questionwithvideo.dart';
 
 class StackQuestionWithVideoandImage extends StatefulWidget {
   final List<Question> questions;
