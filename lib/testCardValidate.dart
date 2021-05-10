@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ class _TestCardValidatState extends State<TestCardValidat> {
   var _formKey = new GlobalKey<FormState>();
   var numberController = new TextEditingController();
   var _paymentCard = PaymentCard();
+  var _autoValidate = false;
 
   var _card = new PaymentCard();
 
@@ -36,7 +38,7 @@ class _TestCardValidatState extends State<TestCardValidat> {
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: new Form(
               key: _formKey,
-              autovalidateMode: AutovalidateMode.always,
+              autovalidate: _autoValidate,
               child: new ListView(
                 children: <Widget>[
                   new SizedBox(
@@ -66,7 +68,7 @@ class _TestCardValidatState extends State<TestCardValidat> {
                   new TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
+                      WhitelistingTextInputFormatter.digitsOnly,
                       new LengthLimitingTextInputFormatter(19),
                       new CardNumberInputFormatter()
                     ],
@@ -90,7 +92,7 @@ class _TestCardValidatState extends State<TestCardValidat> {
                   ),
                   new TextFormField(
                     inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
+                      WhitelistingTextInputFormatter.digitsOnly,
                       new LengthLimitingTextInputFormatter(4),
                     ],
                     decoration: new InputDecoration(
@@ -115,7 +117,7 @@ class _TestCardValidatState extends State<TestCardValidat> {
                   ),
                   new TextFormField(
                     inputFormatters: [
-                     FilteringTextInputFormatter.digitsOnly,
+                      WhitelistingTextInputFormatter.digitsOnly,
                       new LengthLimitingTextInputFormatter(4),
                       new CardMonthInputFormatter()
                     ],
@@ -169,9 +171,9 @@ class _TestCardValidatState extends State<TestCardValidat> {
   void _validateInputs() {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
-      // setState(() {
-      //   _autoValidate = true; // Start validating on every change.
-      // });
+      setState(() {
+        _autoValidate = true; // Start validating on every change.
+      });
       _showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       form.save();

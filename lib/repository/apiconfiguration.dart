@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:global_configuration/global_configuration.dart';
+import 'package:quizapp/helper/helper.dart';
 import 'package:quizapp/ui/constant/constant.dart' as globals;
 import 'package:quizapp/models/apiModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +20,7 @@ Future<ApiConfig> getApiLink() async {
       globals.url = apiData.url;
     }
   }
+  print("data: ${apiData.url}");
   return apiData;
 }
 

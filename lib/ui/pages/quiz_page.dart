@@ -1,10 +1,16 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+
 import 'package:html_unescape/html_unescape.dart';
+import 'package:quizapp/models/category.dart';
 import 'package:quizapp/models/question.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/questionSubmitpage.dart';
+import 'package:quizapp/ui/pages/quiz_finished.dart';
 import 'package:quizapp/ui/widgets/stackwtihVideoAudio.dart';
 
 class QuizPage extends StatefulWidget {
@@ -20,15 +26,20 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  final TextStyle _questionStyle = TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
   int currentIndex = 0;
   final Map<int, dynamic> _answers = {};
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   CountDownController controller = CountDownController();
-  bool onlyQuestion;
-
+  bool onlyquestion;
   @override
   void initState() {
-    onlyQuestion = false;
+    onlyquestion = false;
     // controller.start();
     super.initState();
   }
@@ -60,10 +71,11 @@ class _QuizPageState extends State<QuizPage> {
           elevation: 0,
         ),
         body: SingleChildScrollView(
+
           child: Container(
             height: MediaQuery.of(context).size.height,
             child: Stack(
-              // overflow: Overflow.visible,
+             // overflow: Overflow.visible,
               children: <Widget>[
                 ClipPath(
                   child: Container(
@@ -91,9 +103,11 @@ class _QuizPageState extends State<QuizPage> {
                             currentIndex: currentIndex,
                           ),
                           SizedBox(height: 10),
+
                           SizedBox(
                             height: 200,
                             child: ListView(children: [
+
                               Padding(
                                 padding: const EdgeInsets.only(
                                   top: 30,
@@ -138,6 +152,7 @@ class _QuizPageState extends State<QuizPage> {
                                   ],
                                 ),
                               ),
+
                             ]),
                           ),
                           Container(
@@ -145,7 +160,7 @@ class _QuizPageState extends State<QuizPage> {
                             child: RaisedButton(
                               padding: MediaQuery.of(context).size.width > 800
                                   ? const EdgeInsets.symmetric(
-                                      vertical: 20.0, horizontal: 64.0)
+                                  vertical: 20.0, horizontal: 64.0)
                                   : null,
                               child: Text(
                                 currentIndex == (widget.questions.length - 1)

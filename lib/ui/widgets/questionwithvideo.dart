@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:quizapp/ui/widgets/controlsOverlay.dart';
+import 'package:quizapp/models/category.dart';
 import 'package:quizapp/models/question.dart';
 import 'package:video_player/video_player.dart';
 import 'package:better_player/better_player.dart';

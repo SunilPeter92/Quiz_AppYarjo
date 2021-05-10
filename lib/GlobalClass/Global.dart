@@ -1,3 +1,3 @@
 class Global{
-  static var baseUrl=  "http://a025.autosandtools.com/api/" ;
+  static var baseurl=  "http://a025.autosandtools.com/api/" ;
 }

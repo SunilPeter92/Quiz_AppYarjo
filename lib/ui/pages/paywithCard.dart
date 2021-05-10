@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quizapp/CardValidation/Input_formatters.dart';
+import 'package:quizapp/CardValidation/my_strings.dart';
+import 'package:quizapp/CardValidation/payment_card.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 
 class PayWithCards extends StatefulWidget {
@@ -11,7 +15,21 @@ class PayWithCards extends StatefulWidget {
 }
 
 class _PayWithCardsState extends State<PayWithCards> {
+
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var _formKey = new GlobalKey<FormState>();
+  var numberController = new TextEditingController();
+  var _paymentCard = PaymentCard();
+  var _autoValidate = false;
+  var _card = new PaymentCard();
+
   List<String> _countries = ['United Kingdom', 'Pakistan', 'Dubai'];
+
+  void initState() {
+    super.initState();
+    _paymentCard.type = CardType.Others;
+    numberController.addListener(_getCardTypeFrmNumber);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +59,8 @@ class _PayWithCardsState extends State<PayWithCards> {
                 height: 50,
               ),
               Form(
+                key: _formKey,
+                autovalidate: _autoValidate,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -72,22 +92,15 @@ class _PayWithCardsState extends State<PayWithCards> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: new BorderRadius.circular(10.0),
+                              border: Border.all(color: tintorange),
                             ),
                             child: TextFormField(
                               decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                 // borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(
-                                    color: tintorange,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-
-                                  borderSide: BorderSide(
-                                    color: tintorange,
-
-                                  ),
-                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
                                 hintText: "testing@gmail.com",
                               ),
                             ),
@@ -108,41 +121,42 @@ class _PayWithCardsState extends State<PayWithCards> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                bottom: 5.0,  top: 5),
+                                bottom: 5.0, left: 15, right: 15, top: 5),
                             child: Container(
-                              height: 40,
+                              height: 45,
                               decoration: BoxDecoration(
                                 color: Colors.white,
+                                  border: Border.all(color: tintorange),
                                 borderRadius: new BorderRadius.circular(10.0),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 15,
-                                  right: 15,
-                                  top: 1,
-                                ),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      // borderRadius: BorderRadius.circular(25.0),
-                                      borderSide: BorderSide(
-                                        color: tintorange,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-
-                                      borderSide: BorderSide(
-                                        color: tintorange,
-
-                                      ),
-                                    ),
-                                    hintText: "1234 1234 1234 1234",
-                                    suffixIcon: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: _suffixIcon(),
-                                    ),
+                              child: TextFormField(
+                                validator: CardUtils.validateCardNum,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  WhitelistingTextInputFormatter.digitsOnly,
+                                  new LengthLimitingTextInputFormatter(19),
+                                  new CardNumberInputFormatter()
+                                ],
+                                controller: numberController,
+                                decoration: new InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  filled: true,
+                                   hintText: "1234 1234 1234 1234",
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: _suffixIcon(),
                                   ),
+                                 // labelText: 'Number',
                                 ),
+                                onSaved: (String value) {
+                                  print('onSaved = $value');
+                                  print('Num controller has = ${numberController.text}');
+                                  _paymentCard.number = CardUtils.getCleanedNumber(value);
+                                },
                               ),
                             ),
                           ),
@@ -154,35 +168,48 @@ class _PayWithCardsState extends State<PayWithCards> {
                                   left: 15,
                                 ),
                                 child: Container(
-                                  height: 40,
+                                  height: 45,
                                   width:
                                       MediaQuery.of(context).size.width * 0.4,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:
-                                        new BorderRadius.circular(10.0),
+                                        new BorderRadius.circular(5.0),
+                                    border: Border.all(color: tintorange)
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                       top: 1,
                                     ),
                                     child: TextFormField(
-                                      decoration: InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          // borderRadius: BorderRadius.circular(25.0),
-                                          borderSide: BorderSide(
-                                            color: tintorange,
-                                          ),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-
-                                          borderSide: BorderSide(
-                                            color: tintorange,
-
-                                          ),
-                                        ),
-                                        hintText: "MM/YY",
+                                      inputFormatters: [
+                                        WhitelistingTextInputFormatter.digitsOnly,
+                                        new LengthLimitingTextInputFormatter(4),
+                                        new CardMonthInputFormatter()
+                                      ],
+                                      decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        filled: true,
+                                        // icon: new Image.asset(
+                                        //   'assets/images/calender.png',
+                                        //   width: 40.0,
+                                        //   color: Colors.grey[600],
+                                        // ),
+                                        hintText: 'MM/YY',
+                                      //  labelText: 'Expiry Date',
                                       ),
+                                      validator: CardUtils.validateDate,
+                                      keyboardType: TextInputType.number,
+                                      onSaved: (value) {
+                                        List<int> expiryDate = CardUtils.getExpiryDate(value);
+                                        _paymentCard.month = expiryDate[0];
+                                        _paymentCard.year = expiryDate[1];
+                                      },
+
                                     ),
                                   ),
                                 ),
@@ -194,11 +221,12 @@ class _PayWithCardsState extends State<PayWithCards> {
                                   right: 15,
                                 ),
                                 child: Container(
-                                  height: 40,
+                                  height: 45,
                                   width:
                                       MediaQuery.of(context).size.width * 0.5,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
+                                    border: Border.all(color: tintorange),
                                     borderRadius:
                                         new BorderRadius.circular(10.0),
                                   ),
@@ -207,24 +235,33 @@ class _PayWithCardsState extends State<PayWithCards> {
                                       top: 1,
                                     ),
                                     child: TextFormField(
-                                      decoration: InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          // borderRadius: BorderRadius.circular(25.0),
-                                          borderSide: BorderSide(
-                                            color: tintorange,
-                                          ),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-
-                                          borderSide: BorderSide(
-                                            color: tintorange,
-
-                                          ),
-                                        ),
+                                      inputFormatters: [
+                                        WhitelistingTextInputFormatter.digitsOnly,
+                                        new LengthLimitingTextInputFormatter(4),
+                                      ],
+                                      decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        filled: true,
+                                        // icon: new Image.asset(
+                                        //   'assets/images/card_cvv.png',
+                                        //   width: 40.0,
+                                        //   color: Colors.grey[600],
+                                        // ),
                                         suffixIcon:
-                                            Icon(FontAwesomeIcons.ccMastercard),
+                                        Icon(FontAwesomeIcons.ccMastercard),
                                         hintText: "CVC",
+                                      //  labelText: 'CVV',
                                       ),
+                                      validator: CardUtils.validateCVV,
+                                      keyboardType: TextInputType.number,
+                                      onSaved: (value) {
+                                        _paymentCard.cvv = int.parse(value);
+                                      },
+
                                     ),
                                   ),
                                 ),
@@ -241,7 +278,7 @@ class _PayWithCardsState extends State<PayWithCards> {
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0, left: 15),
                           child: Text(
-                            "Name On Card",
+                            "  Name On Card",
                             style: TextStyle(fontSize: 18, color: titleColor),
                           ),
                         ),
@@ -253,22 +290,21 @@ class _PayWithCardsState extends State<PayWithCards> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: new BorderRadius.circular(10.0),
+                              border: Border.all(color: tintorange),
                             ),
                             child: TextFormField(
+                              onSaved: (String value) {
+                                _card.name = value;
+                              },
+                              keyboardType: TextInputType.text,
+                              validator: (String value) =>
+                              value.isEmpty ? Strings.fieldReq : null,
                               decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  // borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(
-                                    color: tintorange,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-
-                                  borderSide: BorderSide(
-                                    color: tintorange,
-
-                                  ),
-                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
                                 hintText: "Lord Neilson",
                               ),
                             ),
@@ -312,6 +348,7 @@ class _PayWithCardsState extends State<PayWithCards> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: new BorderRadius.circular(10.0),
+                                border: Border.all(color: tintorange),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -319,20 +356,12 @@ class _PayWithCardsState extends State<PayWithCards> {
                                 ),
                                 child: TextFormField(
                                   decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      // borderRadius: BorderRadius.circular(25.0),
-                                      borderSide: BorderSide(
-                                        color: tintorange,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-
-                                      borderSide: BorderSide(
-                                        color: tintorange,
-
-                                      ),
-                                    ),
-                                    hintText: "123 456",
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: "  123 456",
                                   ),
                                 ),
                               ),
@@ -359,34 +388,25 @@ class _PayWithCardsState extends State<PayWithCards> {
                             height: 40,
                             decoration: BoxDecoration(
                               color: Colors.white,
+                              border: Border.all(color: tintorange),
                               borderRadius: new BorderRadius.circular(10.0),
                             ),
                             child: TextFormField(
                               readOnly: true,
                               decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  // borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(
-                                    color: tintorange,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-
-                                  borderSide: BorderSide(
-                                    color: tintorange,
-
-                                  ),
-                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
                                 hintText:
-                                    "2 Credits         +5               Total 7\$",
+                                    "  2 Credits         +5               Total 7\$",
                               ),
                             ),
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                          onTap: (){  _validateInputs();},
                           child: Center(
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.4,
@@ -422,14 +442,49 @@ class _PayWithCardsState extends State<PayWithCards> {
     );
   }
 
+
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    numberController.removeListener(_getCardTypeFrmNumber);
+    numberController.dispose();
+    super.dispose();
+  }
+
+  void _getCardTypeFrmNumber() {
+    String input = CardUtils.getCleanedNumber(numberController.text);
+    CardType cardType = CardUtils.getCardTypeFrmNumber(input);
+    setState(() {
+      this._paymentCard.type = cardType;
+    });
+  }
+
+  void _validateInputs() {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      setState(() {
+        _autoValidate = true; // Start validating on every change.
+      });
+      _showInSnackBar('Please fix the errors in red before submitting.');
+    } else {
+      form.save();
+      // Encrypt and send send payment details to payment gateway
+      _showInSnackBar('Payment card is valid');
+    }
+  }
+
+  void _showInSnackBar(String value) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(value),
+      duration: new Duration(seconds: 3),
+    ));
+  }
   Widget _suffixIcon() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          FontAwesomeIcons.paypal,
-        ),
+
         Icon(
           FontAwesomeIcons.ccVisa,
         ),

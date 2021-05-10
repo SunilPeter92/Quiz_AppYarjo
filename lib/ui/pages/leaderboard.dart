@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 
 class Leaderboard extends StatefulWidget {

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 
 class ChangePassword extends StatefulWidget {
   static const routeName = 'change-password';
-
   ChangePassword({Key key}) : super(key: key);
 
   @override
@@ -13,13 +10,6 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  var _passwordController = TextEditingController();
-  var _confirmPasswordController = TextEditingController();
-  var _formKey = GlobalKey<FormState>();
-
-  bool obs = false;
-  bool obs1 = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,10 +28,8 @@ class _ChangePasswordState extends State<ChangePassword> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
-          height: MediaQuery.of(context).size.height / 1.2,
-          child: Form(
-            key: _formKey,
+            color: Colors.white,
+            height: MediaQuery.of(context).size.height/1.2,
             child: Column(
               children: [
                 Stack(
@@ -50,93 +38,120 @@ class _ChangePasswordState extends State<ChangePassword> {
                       color: tintorange,
                       height: 50,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(50),
+                    Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(50),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
+                          Container(
                             color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8.0, left: 15),
-                                  child: Text(
-                                    "New Password",
-                                    style: TextStyle(
-                                        fontSize: 18, color: titleColor),
-                                  ),
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8.0, left: 15),
+                                child: Text(
+                                  "Old Password",
+                                  style: TextStyle(
+                                      fontSize: 18, color: titleColor),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 15.0,
-                                      left: 5,
-                                      right: 10,
-                                      top: 15),
-                                  child: Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          new BorderRadius.circular(10.0),
-                                    ),
-                                    child: TextFormField(
-                                      obscureText: true,
-                                      controller: _passwordController,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter password';
-                                        }
-                                        if (val.length < 6) {
-                                          return 'Password length too short';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText: '********',
-                                        focusedBorder: OutlineInputBorder(
-                                          // borderRadius: BorderRadius.circular(25.0),
-                                          borderSide: BorderSide(
-                                            color: tintorange,
-                                          ),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: tintorange,
-                                          ),
-                                        ),
-                                        prefixIcon: IconButton(
-                                          icon: Icon(Icons.lock),
-                                          onPressed: () {},
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            FontAwesomeIcons.eye,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              obs = !obs;
-                                            });
-                                          },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 15.0, left: 5, right: 10, top: 5),
+                                child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        // borderRadius: BorderRadius.circular(25.0),
+                                        borderSide: BorderSide(
+                                          color: tintorange,
                                         ),
                                       ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: tintorange,
+                                        ),
+                                      ),
+                                      suffixIcon: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child:
+                                              Icon(Icons.remove_red_eye_sharp)),
+                                      hintText: "*********",
                                     ),
                                   ),
                                 ),
-                              ],
-                            )),
-                        Container(
-                          color: Colors.white,
-                          child: Column(
+                              ),
+                            ],
+                          )),
+                          Container(
+                              color: Colors.white,
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8.0, left: 15),
+                                child: Text(
+                                  "New Password",
+                                  style: TextStyle(
+                                      fontSize: 18, color: titleColor),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 15.0, left: 5, right: 10, top: 5),
+                                child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        // borderRadius: BorderRadius.circular(25.0),
+                                        borderSide: BorderSide(
+                                          color: tintorange,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: tintorange,
+                                        ),
+                                      ),
+                                      suffixIcon: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child:
+                                              Icon(Icons.remove_red_eye_sharp)),
+                                      hintText: "*********",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                          Container(
+                              color: Colors.white,
+                              child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
@@ -150,7 +165,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    bottom: 15.0, left: 5, right: 10, top: 15),
+                                    bottom: 15.0, left: 5, right: 10, top: 5),
                                 child: Container(
                                   height: 40,
                                   decoration: BoxDecoration(
@@ -160,21 +175,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                   ),
                                   child: TextFormField(
                                     obscureText: true,
-                                    controller: _confirmPasswordController,
-                                    validator: (val) {
-                                      if (val.isEmpty) {
-                                        return 'Please enter password';
-                                      }
-                                      if (val.length < 6) {
-                                        return 'Password length too short';
-                                      }
-                                      if (val != _passwordController.text) {
-                                        return 'Passwords do not match';
-                                      }
-                                      return null;
-                                    },
                                     decoration: InputDecoration(
-                                      hintText: '********',
                                       focusedBorder: OutlineInputBorder(
                                         // borderRadius: BorderRadius.circular(25.0),
                                         borderSide: BorderSide(
@@ -186,28 +187,19 @@ class _ChangePasswordState extends State<ChangePassword> {
                                           color: tintorange,
                                         ),
                                       ),
-                                      prefixIcon: IconButton(
-                                        icon: Icon(Icons.lock),
-                                        onPressed: () {},
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          FontAwesomeIcons.eye,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            obs1 = !obs1;
-                                          });
-                                        },
-                                      ),
+                                      suffixIcon: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child:
+                                              Icon(Icons.remove_red_eye_sharp)),
+                                      hintText: "*********",
                                     ),
                                   ),
                                 ),
                               ),
                             ],
-                          ),
-                        ),
-                      ],
+                          )),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -221,10 +213,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     color: Colors.lightBlue[400],
                     textColor: Colors.white,
                     onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        API.changePassword(
-                            context, 30, _passwordController.text);
-                      }
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "Change",
@@ -236,9 +225,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   height: 10,
                 )
               ],
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }
