@@ -17,7 +17,7 @@ Future<List<Question>> getQuestions(int id, int total, String difficulty) async 
   // List<Map<String, dynamic>> questions = List<Map<String,dynamic>>.from(json.decode(res.body)["results"]);
   // return Question.fromData(questions);
 
-  final String url = '${globals.url}api/get_quiz/${id}';
+  final String url = '${globals.url}/api/get_quiz/${id}';
   http.Response response = await http.get(url);
   List<Map<String, dynamic>> questions = List<Map<String, dynamic>>.from(json.decode(response.body)["data"]);
   return Question.fromData(questions);

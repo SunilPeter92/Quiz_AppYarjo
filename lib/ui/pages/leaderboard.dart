@@ -1,10 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:quizapp/ApiClass/API.dart';
+import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
+import 'package:quizapp/ui/pages/authenticationScreen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Leaderboard extends StatefulWidget {
   static const routeName = '/leaderboard';
-  Leaderboard({Key key}) : super(key: key);
+  LeaderBoardModel Response ;
+
+  Leaderboard({Key key , this.Response  }) : super(key: key);
 
   @override
   _LeaderboardState createState() => _LeaderboardState();
@@ -16,6 +23,12 @@ class _LeaderboardState extends State<Leaderboard> {
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+     final quizId = AuthenticationPage.prefs.getInt('quizid');
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,17 +65,37 @@ class _LeaderboardState extends State<Leaderboard> {
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 20,
-                    left: 20,
-                    right: 20,
                     bottom: 10,
                   ),
-                  child: Text(
-                    "85% correct in 60 minutes",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                  widget.Response.myData.percent + "%",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        " correct in",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(width: 5,),
+                      Text(
+                          widget.Response.myData.time + ' sec',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -82,36 +115,52 @@ class _LeaderboardState extends State<Leaderboard> {
                               MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  "#",
+                                  "Name",
                                   style: _textStyle,
                                 ),
                                 Text(
-                                  "NAME",
+                                  "Time",
                                   style: _textStyle,
                                 ),
                                 Text(
-                                  "RESULT",
+                                  "Percent",
                                   style: _textStyle,
                                 ),
                               ],
                             ),
                           ),
-                          LeaderBoardItem(
-                              name: "John",
-                              index: 1,
-                              result: "50 mins 95%"),
-                          LeaderBoardItem(
-                              name: "Cena",
-                              index: 2,
-                              result: "50 mins 95%"),
-                          LeaderBoardItem(
-                              name: "Cent",
-                              index: 3,
-                              result: "50 mins 95%"),
-                          LeaderBoardItem(
-                              name: "Lee",
-                              index: 4,
-                              result: "50 mins 95%"),
+
+                          Container(
+                                    height: MediaQuery.of(context).size.height / 3,
+                                    child: ListView.builder(
+                                        itemCount: widget.Response.otherData.length,
+                                        scrollDirection: Axis.vertical,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return Container(
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              border: Border(bottom: BorderSide(color: Colors.black, width: 2)),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(
+                                                  widget.Response.otherData[index].name,
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                                Text(
+                                                widget.Response.otherData[index].time,
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                                Text(
+                                                  widget.Response.otherData[index].percent + "%",
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  )
                         ],
                       ),
                     ),
@@ -169,41 +218,41 @@ class _LeaderboardState extends State<Leaderboard> {
   }
 }
 
-class LeaderBoardItem extends StatelessWidget {
-  final String name;
-  final int index;
-  final String result;
-  const LeaderBoardItem({
-    Key key,
-    this.name,
-    this.index,
-    this.result,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black, width: 2)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "$index",
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            "$name",
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            "$result",
-            style: TextStyle(fontSize: 15),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class LeaderBoardItem extends StatelessWidget {
+//   final String name;
+//   final int index;
+//   final String result;
+//   const LeaderBoardItem({
+//     Key key,
+//     this.name,
+//     this.index,
+//     this.result,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 60,
+//       decoration: BoxDecoration(
+//         border: Border(bottom: BorderSide(color: Colors.black, width: 2)),
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//         children: [
+//           Text(
+//              snapshot.data.otherData[index].name,
+//             style: TextStyle(fontSize: 15),
+//           ),
+//           Text(
+//             "$name",
+//             style: TextStyle(fontSize: 15),
+//           ),
+//           Text(
+//             "$result",
+//             style: TextStyle(fontSize: 15),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

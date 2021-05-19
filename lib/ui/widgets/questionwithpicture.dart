@@ -41,6 +41,7 @@ class _QuestionWithPictureState extends State<QuestionWithPicture> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+
             SizedBox(
               height: 30,
             ),

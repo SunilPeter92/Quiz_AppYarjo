@@ -4,9 +4,11 @@ import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/login.dart';
 import 'package:quizapp/ui/pages/signup.dart';
 import 'package:quizapp/ui/widgets/bottomNavBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationPage extends StatefulWidget {
   static const routeName = '/authentication-screen';
+  static SharedPreferences prefs;
   AuthenticationPage({Key key}) : super(key: key);
 
   @override
@@ -14,6 +16,19 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
+
+  initi(){
+    SharedPreferences.getInstance().then((prefs) {
+      AuthenticationPage.prefs = prefs;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    initi();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

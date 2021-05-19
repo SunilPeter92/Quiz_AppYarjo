@@ -94,8 +94,7 @@ class _QuizSubmitPageState extends State<QuizSubmitPage> {
                           child: Text("Previous")),
                       RaisedButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(Leaderboard.routeName);
+                            Navigator.of(context).pushNamed(Leaderboard.routeName);
                           },
                           child: Text("Submit")),
                     ],

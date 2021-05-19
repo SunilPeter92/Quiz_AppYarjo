@@ -227,8 +227,8 @@ class _QuizOptionsDialogState extends State<QuizOptionsDialog> {
           MaterialPageRoute(
               builder: (_) => QuizPage(
                     questions: questions,
-                  
-                  )));
+                  ))
+                 );
     } on SocketException catch (_) {
       Navigator.pushReplacement(
           context,

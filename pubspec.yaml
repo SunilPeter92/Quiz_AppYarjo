@@ -50,7 +50,7 @@ dependencies:
   video_player: ^1.0.1
   better_player: ^0.0.55
   dio: ^3.0.10
-  shimmer: ^1.1.2
+  shimmer: ^1.1.0
 
 dev_dependencies:
   flutter_test:

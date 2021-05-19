@@ -6,14 +6,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quizapp/GlobalClass/Global.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/Model/GetQuizbyID.dart';
+import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
 import 'package:quizapp/ui/Model/PurchaseHistoryModel.dart';
+import 'package:quizapp/ui/Model/getcreditModel.dart';
+import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/home.dart';
 import 'package:quizapp/ui/pages/login.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class API{
-
-  static login(BuildContext context, email, password) {
+class API {
+  static login(BuildContext context, email, password) async {
     FormData data = FormData.fromMap({
       "email": email,
       "password": password,
@@ -22,42 +25,41 @@ class API{
     Dio dio = new Dio();
 
     dio.post(Global.baseurl + "user_login", data: data).then((response) {
+      Map<String, dynamic> data = response.data;
       print(response.statusCode);
       if (response.statusCode == 201) {
+        var records = data["data"];
+        var userId = records['id'];
+        print(userId);
+        AuthenticationPage.prefs.setInt('userID', userId);
         Navigator.of(context).pushNamed(HomePage.routeName);
-
       } else if (response.statusCode == 202) {
         Fluttertoast.showToast(
-            msg: "Email not Exit",
-            toastLength: Toast.LENGTH_LONG);
+            msg: "Email not Exit", toastLength: Toast.LENGTH_LONG);
       }
     }).catchError((error) => print(error));
   }
 
-
-  static Future register(BuildContext context, name , username , email , password) async {
-  //  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  static Future register(
+      BuildContext context, name, username, email, password) async {
+    //  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     FormData data = FormData.fromMap({
-      "name" : name ,
+      "name": name,
       "username": username,
       "email": email,
-      "password":  password,
-
+      "password": password,
     });
 
     Dio dio = new Dio();
 
-    dio
-        .post(Global.baseurl + "user_register", data: data)
-        .then((response) {
+    dio.post(Global.baseurl + "user_register", data: data).then((response) {
       print(response);
       if (response.statusCode == 201) {
         // sharedPreferences.setString(
         //     'userID', response.data["user_id"].toString());
 
         Navigator.of(context).pushNamed(LoginPage.routeName);
-
       } else if (response.statusCode == 200) {
         Fluttertoast.showToast(
             msg: 'This E-mail already exists!',
@@ -66,27 +68,23 @@ class API{
     }).catchError((error) => print(error));
   }
 
-  static Future changePassword(BuildContext context, id , password) async {
-  //  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  static Future changePassword(BuildContext context, id, password) async {
+    //  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     FormData data = FormData.fromMap({
-      "id" : id ,
-      "password":  password,
-
+      "id": id,
+      "password": password,
     });
 
     Dio dio = new Dio();
 
-    dio
-        .post(Global.baseurl + "change_pass", data: data)
-        .then((response) {
+    dio.post(Global.baseurl + "change_pass", data: data).then((response) {
       print(response);
       if (response.statusCode == 201) {
         // sharedPreferences.setString(
         //     'userID', response.data["user_id"].toString());
         Fluttertoast.showToast(
             msg: 'Password Updated', toastLength: Toast.LENGTH_LONG);
-
       } else if (response.statusCode == 200) {
         Fluttertoast.showToast(
             msg: 'Password Updated', toastLength: Toast.LENGTH_LONG);
@@ -96,7 +94,8 @@ class API{
 
   static Future<PurchaseHistoryModel> PurchaseHistory() async {
     try {
-      final http.Response response = await http.get(Global.baseurl + "get_purchase_history/15");
+      final http.Response response =
+          await http.get(Global.baseurl + "get_purchase_history/15");
 
       if (response.statusCode == 201) {
         return PurchaseHistoryModel.fromJson(jsonDecode(response.body));
@@ -114,16 +113,66 @@ class API{
     }
   }
 
+  static addcredit(
+      BuildContext context,
+      int user_id,
+      String credit_id,
+      String card_number,
+      String card_year,
+      String card_cvc,
+      String card_name,
+      String country,
+      String amount) async {
+    FormData data = FormData.fromMap({
+      "user_id": user_id,
+      "credit_id": credit_id.toString(),
+      "card_number": card_number.toString(),
+      "card_year": card_year.toString(),
+      "card_cvc": card_cvc.toString(),
+      "card_name": card_name.toString(),
+      "country": country.toString(),
+      "amount ": amount.toString(),
+
+      // edit_id": '1',
+      //       // "card_number": '4242',
+      //       // "card_year": '2050',
+      //       // "card_cvc": '234',
+      //       // "card_name": 'Yasir',
+      //       // "country": 'Pakistan',
+      //       // "amount ": '1000',"user_id": '28',
+      // "cr
+    });
+
+    Dio dio = new Dio();
+
+    dio
+        .post(Global.baseurl + "add_purchased_credit", data: data)
+        .then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 201) {
+        Fluttertoast.showToast(
+            msg: "Success",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        Navigator.of(context).pushNamed(HomePage.routeName);
+      } else if (response.statusCode == 202) {
+        Fluttertoast.showToast(
+            msg: "Email not Exit", toastLength: Toast.LENGTH_LONG);
+      }
+    }).catchError((error) => print(error));
+  }
 
   static Future<GetQuizModel> getQuiz() async {
     try {
-      final http.Response response = await http.get(Global.baseurl + "get_quiz_for_main");
+      final http.Response response =
+          await http.get(Global.baseurl + "get_quiz_for_main");
 
       if (response.statusCode == 201) {
         return GetQuizModel.fromJson(jsonDecode(response.body));
-
-
-
       }
     }
     // on SocketException catch (e) {
@@ -138,9 +187,29 @@ class API{
     }
   }
 
+  static Future<LeaderBoardModel> leader(userid, quiz_id, percent, time) async {
+    http.Response response = await http.post(
+      Global.baseurl + "submit_quiz",
+      body: ({
+        "user_id": userid.toString(),
+        "quiz_id": quiz_id.toString(),
+        "percent": percent.toString(),
+        "time": time.toString(),
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      json.decode(response.body);
+      return LeaderBoardModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
   static Future<GetQuizByID> getQuizDetail(id) async {
     try {
-      final http.Response response = await http.get(Global.baseurl + "getquiz_by_id/$id");
+      final http.Response response =
+          await http.get(Global.baseurl + "getquiz_by_id/$id");
 
       if (response.statusCode == 201) {
         return GetQuizByID.fromJson(jsonDecode(response.body));
@@ -158,6 +227,24 @@ class API{
     }
   }
 
+  static Future<getCreditModel> getcredit() async {
+    try {
+      final http.Response response =
+          await http.get(Global.baseurl + "get_credits");
 
-
+      if (response.statusCode == 201) {
+        return getCreditModel.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
+    }
+  }
 }

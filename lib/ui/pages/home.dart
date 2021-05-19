@@ -10,6 +10,7 @@ import 'package:quizapp/models/category.dart';
 import 'package:quizapp/repository/categoryrepository.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
+import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
 import 'package:quizapp/ui/pages/settings.dart';
 import 'package:quizapp/ui/widgets/quiz_options.dart';
@@ -26,8 +27,6 @@ class _HomePageState extends State<HomePage> {
   List<Category> newcategories = <Category>[];
   @override
   void initState() {
-    // getCategories();
-    // fetchMainCategories();
     super.initState();
   }
 
@@ -160,11 +159,12 @@ class _HomePageState extends State<HomePage> {
                                           padding: const EdgeInsets.only(left: 20 , right: 20 , top: 10),
                                           child: InkWell(
                                             onTap: (){
-                                             var gameid= snapshot.data.data[index].id;
-                                             print(gameid);
+                                             var quizid= snapshot.data.data[index].id;
+                                             AuthenticationPage.prefs.setInt('quizid', quizid);
+                                             print(quizid);
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => QuizDetailPage(userid:gameid)),
+                                                MaterialPageRoute(builder: (context) => QuizDetailPage(userid:quizid)),
                                               );
 
                                             },

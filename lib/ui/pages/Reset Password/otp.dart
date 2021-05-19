@@ -30,7 +30,6 @@ class _OtpState extends State<Otp> {
       onWillPop: () async => false,
       child: Scaffold(
         key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
         backgroundColor: tintorange,
         body: Container(
           child: Form(

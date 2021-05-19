@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/models/question.dart';
+import 'package:quizapp/ui/constant/constcolor.dart';
+import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/check_answers.dart';
+import 'package:quizapp/ui/pages/leaderboard.dart';
+import 'package:quizapp/ui/pages/questionSubmitpage.dart';
 
 
 class QuizFinishedPage extends StatelessWidget {
@@ -8,9 +13,13 @@ class QuizFinishedPage extends StatelessWidget {
   final Map<int, dynamic> answers;
   
   int correctAnswers;
-  QuizFinishedPage({Key key, @required this.questions, @required this.answers}): super(key: key) {
+  String getTime ;
+  QuizFinishedPage({Key key, @required this.questions, @required this.answers , this.getTime}): super(key: key) {
     
   }
+
+  final quizId = AuthenticationPage.prefs.getInt('quizid');
+  final  userId = AuthenticationPage.prefs.getInt('userID');
 
   @override
   Widget build(BuildContext context){
@@ -19,6 +28,7 @@ class QuizFinishedPage extends StatelessWidget {
       if(this.questions[index].correctAnswer == value)
         correct++;
     });
+   var percent =  {correct/questions.length * 100 };
     final TextStyle titleStyle = TextStyle(
       color: Colors.black87,
       fontSize: 16.0,
@@ -29,24 +39,20 @@ class QuizFinishedPage extends StatelessWidget {
       fontSize: 20.0,
       fontWeight: FontWeight.bold
     );
+
+
     
     return Scaffold(
+      backgroundColor: tintorange,
       appBar: AppBar(
         title: Text('Result'),
+        backgroundColor: tintorange,
         elevation: 0,
       ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).primaryColor,
-              Theme.of(context).accentColor
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter
-          )
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -95,34 +101,39 @@ class QuizFinishedPage extends StatelessWidget {
                   trailing: Text("${questions.length - correct}/${questions.length}", style: trailingStyle),
                 ),
               ),
-              SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  RaisedButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: Theme.of(context).accentColor.withOpacity(0.8),
-                    child: Text("Goto Home"),
-                    onPressed: () => Navigator.pop(context),
+              SizedBox(height: 10.0),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(16.0),
+                  title: Text("Time", style: titleStyle),
+                  trailing: Text(getTime, style: trailingStyle),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              InkWell(
+                onTap: (){
+                  API.leader(userId, quizId, percent, getTime).then((value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Leaderboard(Response:value)),
+                    );
+                  }
+                  );
+                },
+                child: Container(
+                  height: 55,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[400],
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  // RaisedButton(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(10.0),
-                  //   ),
-                  //   color: Theme.of(context).primaryColor,
-                  //   child: Text("Check Answers"),
-                  //   onPressed: (){
-                  //     Navigator.of(context).push(MaterialPageRoute(
-                  //       builder: (_) => CheckAnswersPage(questions: questions, answers: answers,)
-                  //     ));
-                  //   },
-                  // ),
-                ],
-              )
+                  child: Center(child: Text('Goto LeaderBoard')),
+                ),
+              ),
+              SizedBox(height: 10,)
             ],
           ),
         ),

@@ -22,7 +22,6 @@ class _AddMailState extends State<AddMail> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
       backgroundColor: tintorange,
       body: Container(
         child: Form(

@@ -63,7 +63,6 @@ class MyApp extends StatelessWidget {
         AuthenticationPage.routeName: (ctx) => AuthenticationPage(),
         CreditHistory.routeName: (ctx) => CreditHistory(),
         AddCredit.routeName: (ctx) => AddCredit(),
-        PayWithCards.routeName: (ctx) => PayWithCards(),
         QuizDetailPage.routeName: (ctx) => QuizDetailPage(),
         DummyQuizPage.routeName: (ctx) => DummyQuizPage(),
         QuizSubmitPage.routeName: (ctx) => QuizSubmitPage(),

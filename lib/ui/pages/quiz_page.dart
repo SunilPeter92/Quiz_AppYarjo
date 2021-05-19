@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +14,14 @@ import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/questionSubmitpage.dart';
 import 'package:quizapp/ui/pages/quiz_finished.dart';
 import 'package:quizapp/ui/widgets/stackwtihVideoAudio.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class QuizPage extends StatefulWidget {
   final List<Question> questions;
-
-  const QuizPage({
+  int timer;
+   QuizPage({
     Key key,
-    @required this.questions,
+    @required  this.questions , this.timer,
   }) : super(key: key);
 
   @override
@@ -31,18 +34,36 @@ class _QuizPageState extends State<QuizPage> {
     fontWeight: FontWeight.w500,
     color: Colors.black,
   );
-
+  CountDownController _controller = CountDownController();
   int currentIndex = 0;
   final Map<int, dynamic> _answers = {};
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   CountDownController controller = CountDownController();
   bool onlyquestion;
+  int t;
+
+  countDown(){
+    Future.doWhile(()async {
+      //this changes the value by -1 every second until it reaches zero
+      await Future.delayed(Duration(seconds: 1),);
+      setState(() {
+        //add text widget in your build method which takes t as the data
+        t--;
+      });
+      return t!=0;
+    });
+  }
+
+
   @override
   void initState() {
     onlyquestion = false;
-    // controller.start();
+    t = widget.timer;
+    countDown();
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +98,28 @@ class _QuizPageState extends State<QuizPage> {
             child: Stack(
              // overflow: Overflow.visible,
               children: <Widget>[
+                Positioned(
+                  top: -80,
+                  left: 0,
+                  right: 0,
+                  bottom: 220,
+                  child: Center(
+                    child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50)
+                        ),
+                        child: Center(
+                            child: CircularCountDownTimer(duration : t , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: false,
+                              isReverseAnimation: false, fillColor: tintorange, ringColor: Colors.blueAccent,   )
+                        )
+                      //CountdownTimer(controller: widget.controller),
+
+                    ),
+                  ),
+                ),
                 ClipPath(
                   child: Container(
                     decoration: BoxDecoration(
@@ -99,8 +142,9 @@ class _QuizPageState extends State<QuizPage> {
                         children: <Widget>[
                           StackQuestionWithVideoandImage(
                             questions: widget.questions,
-                            controller: controller,
+                             controller: t,
                             currentIndex: currentIndex,
+                            // timer: widget.timer
                           ),
                           SizedBox(height: 10),
 
@@ -183,6 +227,7 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
       ),
+
     );
   }
 
@@ -198,16 +243,17 @@ class _QuizPageState extends State<QuizPage> {
         currentIndex++;
       });
     } else {
-      // // Navigator.of(context).pushReplacement(
-      // //   MaterialPageRoute(
-      // //     builder: (_) => QuizFinishedPage(
-      // //       questions: widget.questions,
-      // //       answers: _answers,
-      // //     ),
-      // //   ),
-      // );
-      Navigator.pop(context);
-      Navigator.of(context).pushNamed(QuizSubmitPage.routeName);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => QuizFinishedPage(
+            getTime:  _controller.getTime(),
+            questions: widget.questions,
+            answers: _answers,
+          ),
+        ),
+       );
+      // Navigator.pop(context);
+      // Navigator.of(context).pushNamed(QuizSubmitPage.routeName);
     }
   }
 

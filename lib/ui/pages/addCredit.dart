@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizapp/ApiClass/API.dart';
+import 'package:quizapp/ui/Model/getcreditModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/paywithCard.dart';
 
@@ -11,6 +13,8 @@ class AddCredit extends StatefulWidget {
 }
 
 class _AddCreditState extends State<AddCredit> {
+
+  int crh= 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,96 +83,159 @@ class _AddCreditState extends State<AddCredit> {
                 ),
                 Column(
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          Container(
-                            padding:
-                                EdgeInsets.only(left: 20, right: 20, top: 10),
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              color: Colors.lightBlue[100],
-                              onPressed: () {},
-                              child: Text(
-                                "Add 2 CR",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding:
-                                EdgeInsets.only(left: 20, right: 20, top: 10),
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              color: Colors.lightBlue[100],
-                              onPressed: () {},
-                              child: Text(
-                                "Add 3 CR",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(
-                                bottom: 20, left: 20, right: 20),
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              color: Colors.lightBlue[100],
-                              onPressed: () {},
-                              child: Text(
-                                "Add 4 CR",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                                bottom: 20, left: 20, right: 20, top: 10),
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              color: Colors.lightBlue[100],
-                              onPressed: () {},
-                              child: Text(
-                                "Add 5 CR",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    FutureBuilder<getCreditModel>(
+                        future: API.getcredit(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              height: MediaQuery.of(context).size.height /3,
+                              child: GridView.builder(
+                                 gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 250,
+                                      childAspectRatio: 6 / 2,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10),
+                                  itemCount: snapshot.data.data.length,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Container(
+                                      padding:
+                                      EdgeInsets.only(left: 5, right: 5,top: 10),
+                                      width: MediaQuery.of(context).size.width * 0.6,
+                                      child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10)),
+                                        color: Colors.lightBlue[100],
+                                        onPressed: () {
+                                          String crid = snapshot.data.data[index].creditId.toString();
+                                          String price = snapshot.data.data[index].price.toString();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => PayWithCards(crh:crid, price:price)),);
+                                        },
+                                        child: Text(
+                                          snapshot.data.data[index].name + "  " + snapshot.data.data[index].price.toString(),
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+
+                          return CircularProgressIndicator();
+                        }),
+
+                    // Container(
+                    //   child: Row(
+                    //     children: [
+                    //       Container(
+                    //         padding:
+                    //             EdgeInsets.only(left: 20, right: 20, top: 10),
+                    //         width: MediaQuery.of(context).size.width * 0.5,
+                    //         child: RaisedButton(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(10)),
+                    //           color: Colors.lightBlue[100],
+                    //           onPressed: () {
+                    //             Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(builder: (context) => PayWithCards(crh:2,)),);
+                    //             },
+                    //           child: Text(
+                    //             "Add 2 CR",
+                    //             style: TextStyle(color: Colors.black),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         padding:
+                    //             EdgeInsets.only(left: 20, right: 20, top: 10),
+                    //         width: MediaQuery.of(context).size.width * 0.5,
+                    //         child: RaisedButton(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(10)),
+                    //           color: Colors.lightBlue[100],
+                    //           onPressed: () { Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(builder: (context) => PayWithCards(crh:3,)),);},
+                    //           child: Text(
+                    //             "Add 3 CR",
+                    //             style: TextStyle(color: Colors.black),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   child: Row(
+                    //     children: [
+                    //       Container(
+                    //         padding: EdgeInsets.only(
+                    //             bottom: 20, left: 20, right: 20),
+                    //         width: MediaQuery.of(context).size.width * 0.5,
+                    //         child: RaisedButton(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(10)),
+                    //           color: Colors.lightBlue[100],
+                    //           onPressed: () {
+                    //             Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(builder: (context) => PayWithCards(crh:4,)),);
+                    //           },
+                    //           child: Text(
+                    //             "Add 4 CR",
+                    //             style: TextStyle(color: Colors.black),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         padding: EdgeInsets.only(
+                    //             bottom: 20, left: 20, right: 20, top: 10),
+                    //         width: MediaQuery.of(context).size.width * 0.5,
+                    //         child: RaisedButton(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(10)),
+                    //           color: Colors.lightBlue[100],
+                    //           onPressed: () {
+                    //             Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(builder: (context) => PayWithCards(crh:5,)),);
+                    //           },
+                    //           child: Text(
+                    //             "Add 5 CR",
+                    //             style: TextStyle(color: Colors.black),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(PayWithCards.routeName);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      height: MediaQuery.of(context).size.height * 0.09,
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlue[100],
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Center(child: Text("Add 10CR and \nget ONE FREE")),
-                    ),
-                  ),
-                )
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                // Center(
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(builder: (context) => PayWithCards( crh:10,)),);
+                //     },
+                //     child: Container(
+                //       width: MediaQuery.of(context).size.width * 0.4,
+                //       height: MediaQuery.of(context).size.height * 0.09,
+                //       decoration: BoxDecoration(
+                //           color: Colors.lightBlue[100],
+                //           borderRadius: BorderRadius.all(Radius.circular(10))),
+                //       child: Center(child: Text("Add 10CR and \nget ONE FREE")),
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ],

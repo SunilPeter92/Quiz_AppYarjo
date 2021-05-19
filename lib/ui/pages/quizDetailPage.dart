@@ -14,6 +14,7 @@ import 'package:quizapp/ui/pages/dummyquizPage/quizpagee.dart';
 import 'package:quizapp/ui/pages/error.dart';
 import 'package:quizapp/ui/pages/quiz_page.dart';
 import 'package:shimmer/shimmer.dart';
+import 'dart:convert';
 
 class QuizDetailPage extends StatefulWidget {
   static const routeName = 'quiz-detail-page';
@@ -224,6 +225,55 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                     ],
                                   ),
                                 ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    InkWell(
+
+                                      onTap: (){
+
+                                        var time = getQuiz.dataByID[0].time.toString();
+                                        int _startTime = int.parse(time.split(":")[0])*60;
+                                        _startQuiz(_startTime)
+                                        ;},
+                                      child: Container(
+                                        height: 35,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            borderRadius: BorderRadius.circular(20)
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Pay (5\$)",style: TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        // _startQuiz(20);
+                                      },
+                                      child: Container(
+                                        height: 35,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            borderRadius: BorderRadius.circular(20)
+                                        ),
+                                        // onPressed: () {
+                                        //   Navigator.of(context).pushNamed(DummyQuizPage.routeName);
+                                        // },
+                                        child: Center(
+                                          child: Text(
+                                            "Home",style: TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 50,)
                               ],
                             );
                           } else if (snapshot.hasError) {
@@ -239,29 +289,54 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                 height: MediaQuery.of(context).size.height,
                               ));
                         }),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          RaisedButton(
-                            onPressed: _startQuiz,
-                            // onPressed: () {
-                            //   Navigator.of(context).pushNamed(DummyQuizPage.routeName);
-                            // },
-                            child: Text(
-                              "Pay (5\$)",
-                            ),
-                          ),
-                          RaisedButton(
-                            onPressed: () {},
-                            child: Text(
-                              "Home",
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                    // Padding(
+                    //   padding: EdgeInsets.all(10),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //     children: [
+                    //       InkWell(
+                    //         onTap: (){ _startQuiz(20);},
+                    //         child: Container(
+                    //          height: 35,
+                    //           width: 100,
+                    //           decoration: BoxDecoration(
+                    //             color: Colors.blue,
+                    //             borderRadius: BorderRadius.circular(20)
+                    //           ),
+                    //           // onPressed: () {
+                    //           //   Navigator.of(context).pushNamed(DummyQuizPage.routeName);
+                    //           // },
+                    //           child: Center(
+                    //             child: Text(
+                    //               "Pay (5\$)",style: TextStyle(color: Colors.white),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       InkWell(
+                    //         onTap: (){
+                    //          // _startQuiz(20);
+                    //           },
+                    //         child: Container(
+                    //           height: 35,
+                    //           width: 100,
+                    //           decoration: BoxDecoration(
+                    //               color: Colors.blue,
+                    //               borderRadius: BorderRadius.circular(20)
+                    //           ),
+                    //           // onPressed: () {
+                    //           //   Navigator.of(context).pushNamed(DummyQuizPage.routeName);
+                    //           // },
+                    //           child: Center(
+                    //             child: Text(
+                    //               "Home",style: TextStyle(color: Colors.white),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 )
               ],
@@ -272,7 +347,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
     );
   }
 
-  void _startQuiz() async {
+void _startQuiz(timer) async {
     setState(() {
       processing = true;
     });
@@ -293,6 +368,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
           MaterialPageRoute(
               builder: (_) => QuizPage(
                     questions: questions,
+                timer:timer,
                   )));
     } on SocketException catch (_) {
       Navigator.pushReplacement(
