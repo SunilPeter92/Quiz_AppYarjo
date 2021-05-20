@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/ui/Model/PurchaseHistoryModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
+import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CreditHistory extends StatefulWidget {
@@ -13,6 +14,8 @@ class CreditHistory extends StatefulWidget {
 }
 
 class _CreditHistoryState extends State<CreditHistory> {
+
+  int  uid = AuthenticationPage.prefs.getInt('userID');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +87,8 @@ class _CreditHistoryState extends State<CreditHistory> {
                       Container(
                         height: MediaQuery.of(context).size.height / 2,
                         child: FutureBuilder<PurchaseHistoryModel>(
-                            future: API.PurchaseHistory(),
+
+                            future: API.PurchaseHistory(uid),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return ListView.builder(

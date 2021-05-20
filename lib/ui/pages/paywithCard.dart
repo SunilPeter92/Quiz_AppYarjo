@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/CardValidation/Input_formatters.dart';
@@ -531,16 +532,27 @@ class _PayWithCardsState extends State<PayWithCards> {
       });
       _showInSnackBar('Please fix the errors in red before submitting.');
     } else {
-      API.addcredit(
+      API.addcreditt(
           context,
-          uid,
+          uid.toString(),
           widget.crh,
           numberController.text,
           dateController.text,
           cvcController.text,
           nameController.text,
           _selectedItem.name,
-          widget.price);
+          widget.price).then((value) {
+            if(value == '201' ){
+              Fluttertoast.showToast(
+                  msg: 'Success',
+                  toastLength: Toast.LENGTH_SHORT);
+            } else{
+              Fluttertoast.showToast(
+                  msg: 'Enter Valid Credential',
+                  toastLength: Toast.LENGTH_SHORT);
+            }
+
+      });
 
       form.save();
       // Encrypt and send send payment details to payment gateway

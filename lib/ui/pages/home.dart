@@ -12,6 +12,7 @@ import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
+import 'package:quizapp/ui/pages/All_Quiz.dart';
 import 'package:quizapp/ui/pages/settings.dart';
 import 'package:quizapp/ui/widgets/quiz_options.dart';
 import 'package:shimmer/shimmer.dart';
@@ -227,22 +228,33 @@ class _HomePageState extends State<HomePage> {
                                     ));
                               }),
                         ),
-                        Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.only(bottom: 0, left: 20, right: 20),
-                          width: MediaQuery.of(context).size.width,
-                          child: RaisedButton(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                side: BorderSide(color: tintorange)),
-                            onPressed: () {},
-                            child: Text(
-                              "List All",
-                              style: TextStyle(color: Colors.blueAccent[300]),
+                        SizedBox(height: 10,),
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  All_Quiz()),
+                            );
+
+                          },
+                          child: Container(
+                            height: 30,
+                            padding: EdgeInsets.only(bottom: 0, left: 20, right: 20),
+                            width: MediaQuery.of(context).size.width/1.12,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: tintorange)
                             ),
-                          ),
+                              child: Center(
+                                child: Text(
+                                  "List All",
+                                  style: TextStyle(color: Colors.blueAccent[300]),
+                                ),
+                              ),
+                            ),
                         ),
+
                         Container(
                           color: Colors.white,
                           width: MediaQuery.of(context).size.width,

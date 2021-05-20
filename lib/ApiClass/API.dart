@@ -8,6 +8,7 @@ import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/Model/GetQuizbyID.dart';
 import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
 import 'package:quizapp/ui/Model/PurchaseHistoryModel.dart';
+import 'package:quizapp/ui/Model/getuserModel.dart';
 import 'package:quizapp/ui/Model/getcreditModel.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/home.dart';
@@ -92,13 +93,35 @@ class API {
     }).catchError((error) => print(error));
   }
 
-  static Future<PurchaseHistoryModel> PurchaseHistory() async {
+  static Future<PurchaseHistoryModel> PurchaseHistory(int id) async {
     try {
       final http.Response response =
-          await http.get(Global.baseurl + "get_purchase_history/15");
+          await http.get(Global.baseurl + "get_purchase_history/ $id");
 
       if (response.statusCode == 201) {
         return PurchaseHistoryModel.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
+    }
+  }
+
+
+  static Future<GetUserModel> GetUser(int id) async {
+    try {
+      final http.Response response =
+          await http.get(Global.baseurl + "get_user/ $id");
+      print(response.statusCode);
+      if (response.statusCode == 201) {
+        return GetUserModel.fromJson(jsonDecode(response.body));
       }
     }
     // on SocketException catch (e) {
@@ -165,6 +188,62 @@ class API {
       }
     }).catchError((error) => print(error));
   }
+
+
+  static Future<String> addcreditt( BuildContext context,
+      String user_id,
+      String credit_id,
+      String card_number,
+      String card_year,
+      String card_cvc,
+      String card_name,
+      String country,
+      String amount) async {
+    http.Response response = await http.post(
+      Global.baseurl + "add_purchased_credit",
+      body: ({
+        "user_id": user_id,
+        "credit_id": credit_id.toString(),
+        "card_number": card_number.toString(),
+        "card_year": card_year.toString(),
+        "card_cvc": card_cvc.toString(),
+        "card_name": card_name.toString(),
+        "country": country.toString(),
+        "amount": amount.toString(),
+      }),
+    );
+    print(response.body);
+    return response.statusCode.toString();
+  }
+
+
+  static Future<String> EditUser(
+      String id,
+      String username,
+      String email,
+      String password,
+      String name,
+      String country,
+      String marketpreference,
+      String showwidget) async {
+    http.Response response = await http.post(
+      Global.baseurl + "update_user",
+      body: ({
+        "id": id,
+        "username": username.toString(),
+        "email": email.toString(),
+        "password": '0',
+        "name": name.toString(),
+        "country": country.toString(),
+        "market preference": '1',
+        "show widget": '1',
+      }),
+    );
+    print(response.statusCode);
+    return response.statusCode.toString();
+  }
+
+
 
   static Future<GetQuizModel> getQuiz() async {
     try {
