@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/repository/userRepository.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
+import 'package:quizapp/ui/pages/Reset%20Password/add_mail.dart';
 import 'package:quizapp/ui/pages/home.dart';
 import 'package:quizapp/ui/pages/signup.dart';
 import 'package:quizapp/ui/widgets/bottomNavBar.dart';
@@ -139,8 +140,12 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+
                       FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, AddMail.routeName);
+                        },
                         child: Text(
                           "Forgot Password?",
                           style: TextStyle(color: Colors.grey),

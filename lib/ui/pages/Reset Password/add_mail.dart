@@ -41,14 +41,15 @@ class _AddMailState extends State<AddMail> {
                     children: [
                       SizedBox(height: 20),
                       Container(
-                        height: 80,
+
                         width: 280,
                         margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          color: Colors.white.withOpacity(0.5),
-                        ),
-                        padding: EdgeInsets.all(20),
+                        // decoration: BoxDecoration(
+                        //   borderRadius: BorderRadius.all(Radius.circular(10)),
+                        //   border: Border.all(color: Colors.black),
+                        //   color: Colors.white.withOpacity(0.5),
+                        // ),
+
                         child: TextFormField(
                           controller: emailController,
                           validator: (text) {
@@ -59,6 +60,15 @@ class _AddMailState extends State<AddMail> {
                           },
                           decoration: InputDecoration(
                             border: InputBorder.none,
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+                            errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+
+                            fillColor: Colors.white.withOpacity(0.5),
+                            filled: true,
                             hintText: 'Email',
                             prefixIcon: IconButton(
                               icon: Icon(Icons.person),
@@ -99,10 +109,9 @@ class _AddMailState extends State<AddMail> {
       ),
     );
   }
-
   Future sendMail(BuildContext context, String email) async {
     final response =
-        await http.post("http://a025.autosandtools.com/api/reset_pass", body: {
+    await http.post("http://a025.autosandtools.com/api/reset_pass", body: {
       'email': email,
     });
 
@@ -121,7 +130,7 @@ class _AddMailState extends State<AddMail> {
 
   _showSuccessDialog(BuildContext context) async {
     Fluttertoast.showToast(
-            msg: 'E-Mail sent successfully!', toastLength: Toast.LENGTH_SHORT)
+        msg: 'E-Mail sent successfully!', toastLength: Toast.LENGTH_SHORT)
         .whenComplete(() async {
       _scaffoldKey.currentState.showSnackBar(new SnackBar(
         duration: new Duration(seconds: 4),
@@ -129,7 +138,7 @@ class _AddMailState extends State<AddMail> {
           children: <Widget>[
             new CircularProgressIndicator(
                 valueColor:
-                    new AlwaysStoppedAnimation<Color>(Color(0xffffffff))),
+                new AlwaysStoppedAnimation<Color>(Color(0xffffffff))),
             SizedBox(width: 10),
             new Text(
               "Redirecting...",
@@ -139,9 +148,10 @@ class _AddMailState extends State<AddMail> {
         ),
       ));
       Future.delayed(Duration(seconds: 4), () {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(Otp.routeName, ModalRoute.withName('/'));
-      });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Otp(email:emailController.text)),
+        );      });
       return;
     });
   }

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quizapp/GlobalClass/Global.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/Model/GetQuizbyID.dart';
+import 'package:quizapp/ui/Model/GetquizbyUserModel.dart';
 import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
 import 'package:quizapp/ui/Model/PurchaseHistoryModel.dart';
 import 'package:quizapp/ui/Model/getuserModel.dart';
@@ -284,6 +285,25 @@ class API {
       return null;
     }
   }
+
+
+
+  static Future<getquizbyuseridModel> UserQuiz(userid) async {
+    http.Response response = await http.post(
+      Global.baseurl + "get_quizes_by_user_id",
+      body: ({
+        "id": userid.toString(),
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      json.decode(response.body);
+      return getquizbyuseridModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
 
   static Future<GetQuizByID> getQuizDetail(id) async {
     try {

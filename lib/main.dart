@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         EditAccount.routeNamne: (ctx) => EditAccount(),
         ChangePassword.routeName: (ctx) => ChangePassword(),
         AddMail.routeName: (ctx) => AddMail(),
-        Otp.routeName: (ctx) => Otp(),
+      //  Otp.routeName: (ctx) => Otp(),
         ResetPassword.routeName: (ctx) => ResetPassword(),
       },
       builder: (context, child) =>

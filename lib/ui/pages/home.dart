@@ -9,6 +9,7 @@ import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/models/category.dart';
 import 'package:quizapp/repository/categoryrepository.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
+import 'package:quizapp/ui/Model/GetquizbyUserModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
@@ -26,8 +27,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   List<Category> newcategories = <Category>[];
+  int uid;
   @override
   void initState() {
+    uid = AuthenticationPage.prefs.getInt('userID');
     super.initState();
   }
 
@@ -271,37 +274,101 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Container(
-                          color: Colors.white,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.38,
-                                height: 100,
-                                child: CachedNetworkImage(
-                                  imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
-                                  fit: BoxFit.fitHeight,
-                                  placeholder: (context, url) =>
-                                  Center(child: new CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                  new Icon(Icons.error),
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.38,
-                                height: 100,
-                                child: CachedNetworkImage(
-                                  imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
-                                  fit: BoxFit.fitHeight,
-                                  placeholder: (context, url) =>
-                                  Center(child: new CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                  new Icon(Icons.error),
-                                ),
-                              ),
-                            ],
-                          ),
+                          height: MediaQuery.of(context).size.height / 5,
+                          child: FutureBuilder<getquizbyuseridModel>(
+                              future: API.UserQuiz(uid),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return ListView.builder(
+                                      itemCount: snapshot.data.data.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: 20 , right: 20 , top: 10),
+                                          child: InkWell(
+                                            onTap: (){
+                                              var quizid= snapshot.data.data[index].id;
+                                              AuthenticationPage.prefs.setInt('quizid', quizid);
+                                              print(quizid);
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(builder: (context) => QuizDetailPage(userid:quizid)),
+                                              // );
+
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  border: Border.all(color: tintorange)),
+                                              height: 100,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                    child: CachedNetworkImage(
+                                                      height: 150.0,
+                                                      width: 120.0,
+                                                      imageUrl: snapshot.data.data[index].image ,
+                                                      fit: BoxFit.fitHeight,
+                                                      placeholder: (context, url) => Center(child: new CircularProgressIndicator()),
+                                                      errorWidget: (context, url, error) => new Icon(Icons.error),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+
+                                // By default, show a loading spinner
+                                return Shimmer.fromColors(
+                                    baseColor: Colors.grey[300],
+                                    highlightColor: Colors.white,
+                                    child: Container(
+                                      color: Colors.black,
+                                      height: MediaQuery.of(context).size.height,
+                                    ));
+                              }),
                         ),
+                        // Container(
+                        //   color: Colors.white,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //     children: [
+                        //       Container(
+                        //         width: MediaQuery.of(context).size.width * 0.38,
+                        //         height: 100,
+                        //         child: CachedNetworkImage(
+                        //           imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                        //           fit: BoxFit.fitHeight,
+                        //           placeholder: (context, url) =>
+                        //           Center(child: new CircularProgressIndicator()),
+                        //           errorWidget: (context, url, error) =>
+                        //           new Icon(Icons.error),
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         width: MediaQuery.of(context).size.width * 0.38,
+                        //         height: 100,
+                        //         child: CachedNetworkImage(
+                        //           imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                        //           fit: BoxFit.fitHeight,
+                        //           placeholder: (context, url) =>
+                        //           Center(child: new CircularProgressIndicator()),
+                        //           errorWidget: (context, url, error) =>
+                        //           new Icon(Icons.error),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Container(
                           color: Colors.white,
                           child: Padding(
