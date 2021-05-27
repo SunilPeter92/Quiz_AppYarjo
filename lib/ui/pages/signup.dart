@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/repository/userRepository.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
@@ -8,6 +9,8 @@ import 'package:http/http.dart' as http;
 
 class SignupPage extends StatefulWidget {
   static const routeName = '/signup';
+  static ProgressDialog pr;
+
   SignupPage({Key key}) : super(key: key);
 
   @override
@@ -21,6 +24,13 @@ class _SignupPageState extends State<SignupPage> {
   final UsernameController= TextEditingController();
   final nameController= TextEditingController();
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    SignupPage.pr = ProgressDialog(context);
+    super.initState();
+  }
   bool obs = true;
   @override
   Widget build(BuildContext context) {
@@ -221,6 +231,7 @@ class _SignupPageState extends State<SignupPage> {
                           InkWell(
                             onTap: () {
                               if (_formKey.currentState.validate()) {
+                                SignupPage.pr.show();
                                API.register(context, nameController.text, UsernameController.text, emailController.text, PasswordConrtoller.text)
                                     .then((value) {
                                   print(value.status);

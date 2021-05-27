@@ -8,9 +8,13 @@ import 'package:quizapp/ui/pages/home.dart';
 import 'package:quizapp/ui/pages/signup.dart';
 import 'package:quizapp/ui/widgets/bottomNavBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
+  static ProgressDialog pr;
   LoginPage({Key key}) : super(key: key);
 
   @override
@@ -24,6 +28,12 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoggedIn ;
   bool obs = true;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    LoginPage.pr = ProgressDialog(context);
+    super.initState();
+  }
   @override
   Future<void> setState(fn) async {
     // TODO: implement setState
@@ -155,6 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           if (_formKey.currentState.validate()) {
                           //  Navigator.of(context).pushNamed(HomePage.routeName);
+                            LoginPage.pr.show();
                            API.login(context, emailController.text, passwordController.text);
                             // userLogin(email.text, password.text);
                           }

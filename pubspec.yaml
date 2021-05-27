@@ -51,6 +51,7 @@ dependencies:
   better_player: ^0.0.55
   dio: ^3.0.10
   shimmer: ^1.1.0
+  progress_dialog: ^1.2.4
 
 dev_dependencies:
   flutter_test:

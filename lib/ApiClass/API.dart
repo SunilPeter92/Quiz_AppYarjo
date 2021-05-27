@@ -15,6 +15,7 @@ import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/home.dart';
 import 'package:quizapp/ui/pages/login.dart';
 import 'package:http/http.dart' as http;
+import 'package:quizapp/ui/pages/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
@@ -34,6 +35,7 @@ class API {
         var userId = records['id'];
         print(userId);
         AuthenticationPage.prefs.setInt('userID', userId);
+        LoginPage.pr.hide();
         Navigator.of(context).pushNamed(HomePage.routeName);
       } else if (response.statusCode == 202) {
         Fluttertoast.showToast(
@@ -60,7 +62,7 @@ class API {
       if (response.statusCode == 201) {
         // sharedPreferences.setString(
         //     'userID', response.data["user_id"].toString());
-
+        SignupPage.pr.hide();
         Navigator.of(context).pushNamed(LoginPage.routeName);
       } else if (response.statusCode == 200) {
         Fluttertoast.showToast(
