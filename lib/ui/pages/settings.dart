@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/ApiClass/API.dart';
+import 'package:quizapp/ui/Model/getusercreditModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/addCredit.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
@@ -33,8 +35,8 @@ class _SettingsState extends State<Settings> {
       padding: const EdgeInsets.only(
         top: 6.0,
         bottom: 6.0,
-        left: 15,
-        right: 10,
+        left: 20,
+        right: 20,
       ),
       child: Align(
           alignment: Alignment.centerLeft,
@@ -59,7 +61,7 @@ class _SettingsState extends State<Settings> {
         centerTitle: true,
         elevation: 0,
         title: Text(
-          "SETTING",
+          "SETTINGS",
           style: TextStyle(
             color: Colors.white,
             //fontWeight: FontWeight.bold,
@@ -93,13 +95,32 @@ class _SettingsState extends State<Settings> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Balance:  2 credits",
-                            style: TextStyle(
-                                color: titleColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          FutureBuilder<getUserCredit>(
+                              future: API.getCredit(uid),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Credit' :'Balance :' + snapshot.data.credit.toString() + 'Credit' ,style: TextStyle(
+                                      color: titleColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),)
+
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+
+                                // By default, show a loading spinner
+                                return Container(
+                                  child: Text(
+                                    '0 Credit',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              }),
+
                           InkWell(
                             onTap: () {
                               Navigator.of(context)
@@ -203,49 +224,47 @@ class _SettingsState extends State<Settings> {
 
 
                   SizedBox(height: 30),
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            color: Colors.lightBlue[100],
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(EditAccount.routeNamne);
-                            },
-                            child: Text(
-                              "Edit Acc Details",
-                              style: TextStyle(color: Colors.black),
+                  Padding(
+                    padding: const EdgeInsets.only( left: 20,
+                      right: 20,),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              color: Colors.lightBlue[100],
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(EditAccount.routeNamne);
+                              },
+                              child: Text(
+                                "Edit Acc Details",
+                                style: TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                            right: 20,
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            color: Colors.lightBlue[100],
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(ChangePassword.routeName);
-                            },
-                            child: Text(
-                              "Change a PW",
-                              style: TextStyle(color: Colors.black),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.42,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              color: Colors.lightBlue[100],
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(ChangePassword.routeName);
+                              },
+                              child: Text(
+                                "Change a PW",
+                                style: TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Container(

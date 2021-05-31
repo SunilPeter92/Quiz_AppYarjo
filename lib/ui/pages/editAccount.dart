@@ -62,10 +62,11 @@ class _EditAccountState extends State<EditAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.white ,
         appBar: AppBar(
           backgroundColor: tintorange,
          title: Text(
-           "ACCOUNT DETAIL",
+           "ACCOUNT DETAILS",
            style: TextStyle(
              color: Colors.white,
              //fontWeight: FontWeight.bold,
@@ -238,7 +239,7 @@ class _EditAccountState extends State<EditAccount> {
                                ),
                                Padding(
                                  padding: const EdgeInsets.only(
-                                     bottom: 15.0,  top: 5),
+                                     bottom: 15.0, left: 15, right: 15, top: 5),
                                  child: Container(
                                    height: 50,
                                    decoration: BoxDecoration(
@@ -246,36 +247,30 @@ class _EditAccountState extends State<EditAccount> {
                                      borderRadius:
                                      new BorderRadius.circular(10.0),
                                    ),
-                                   child: Padding(
-                                     padding: EdgeInsets.only(
-                                       left: 15,
-                                       right: 15,
-                                     ),
-                                     child: TextFormField(
+                                   child: TextFormField(
 
-                                       controller: EmailController,
-                                       validator: (value) {
-                                         if (value == null || value.isEmpty) {
-                                           return 'Please enter Email';
-                                         }
-                                         return null;
-                                       },
-                                       decoration: InputDecoration(
-                                         focusedBorder: OutlineInputBorder(
-                                           // borderRadius: BorderRadius.circular(25.0),
-                                           borderSide: BorderSide(
-                                             color: tintorange,
-                                           ),
+                                     controller: EmailController,
+                                     validator: (value) {
+                                       if (value == null || value.isEmpty) {
+                                         return 'Please enter Email';
+                                       }
+                                       return null;
+                                     },
+                                     decoration: InputDecoration(
+                                       focusedBorder: OutlineInputBorder(
+                                         // borderRadius: BorderRadius.circular(25.0),
+                                         borderSide: BorderSide(
+                                           color: tintorange,
                                          ),
-                                         enabledBorder: OutlineInputBorder(
-
-                                           borderSide: BorderSide(
-                                             color: tintorange,
-
-                                           ),
-                                         ),
-                                         hintText: "testing@gmail.com",
                                        ),
+                                       enabledBorder: OutlineInputBorder(
+
+                                         borderSide: BorderSide(
+                                           color: tintorange,
+
+                                         ),
+                                       ),
+                                       hintText: "testing@gmail.com",
                                      ),
                                    ),
                                  ),
@@ -312,7 +307,7 @@ class _EditAccountState extends State<EditAccount> {
                                  ),
                                  CheckboxListTile(
                                    title: const Text(
-                                       'Allow emails about oers and new Quizzes'),
+                                       'Allow emails about offers and new Quizzes'),
                                    value: timeDilation != 1.0,
                                    onChanged: (bool value) {
                                      setState(() {
@@ -322,7 +317,7 @@ class _EditAccountState extends State<EditAccount> {
                                  ),
                                  CheckboxListTile(
                                    title: const Text(
-                                       'Allow emails from our Atiates'),
+                                       'Allow emails from our Affiliates'),
                                    value: timeDilation != 1.0,
                                    onChanged: (bool value) {
                                      setState(() {
@@ -363,7 +358,7 @@ class _EditAccountState extends State<EditAccount> {
                                  ),
                                  CheckboxListTile(
                                    title: const Text(
-                                       'Allow emails about oers and new Quizzes'),
+                                       'News Widget at Homepage'),
                                    value: timeDilation != 1.0,
                                    onChanged: (bool value) {
                                      setState(() {

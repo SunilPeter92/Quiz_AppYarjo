@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/ui/Model/getcreditModel.dart';
+import 'package:quizapp/ui/Model/getusercreditModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/paywithCard.dart';
+
+import 'authenticationScreen.dart';
 
 class AddCredit extends StatefulWidget {
   static const routeName = 'add-credit';
@@ -15,9 +18,16 @@ class AddCredit extends StatefulWidget {
 class _AddCreditState extends State<AddCredit> {
 
   int crh= 2;
+  int uid;
+  @override
+  void initState() {
+    uid = AuthenticationPage.prefs.getInt('userID');
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: tintorange,
         elevation: 0,
@@ -56,13 +66,31 @@ class _AddCreditState extends State<AddCredit> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Balance:  2 credits",
-                          style: TextStyle(
-                              color: titleColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        FutureBuilder<getUserCredit>(
+                            future: API.getCredit(uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Credit' :'Balance :' + snapshot.data.credit.toString() + 'Credit' , style: TextStyle(
+                                    color: titleColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),)
+
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+
+                              // By default, show a loading spinner
+                              return Container(
+                                child: Text(
+                                  '0 Credit',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }),
                         Text(
                           "(See Purchase History)",
                           style: TextStyle(color: titleColor, fontSize: 12),
@@ -109,14 +137,14 @@ class _AddCreditState extends State<AddCredit> {
                                             borderRadius: BorderRadius.circular(10)),
                                         color: Colors.lightBlue[100],
                                         onPressed: () {
-                                          String crid = snapshot.data.data[index].creditId.toString();
+                                          String crid = snapshot.data.data[index].id.toString();
                                           String price = snapshot.data.data[index].price.toString();
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) => PayWithCards(crh:crid, price:price)),);
                                         },
                                         child: Text(
-                                          snapshot.data.data[index].name + "  " + snapshot.data.data[index].price.toString(),
+                                          snapshot.data.data[index].name.toString() + " Credit  " + snapshot.data.data[index].price.toString(),
                                           style: TextStyle(color: Colors.black),
                                         ),
                                       ),

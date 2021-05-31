@@ -22,21 +22,21 @@ class getCreditModel {
 }
 
 class Data {
-  int creditId;
-  String name;
+  int id;
+  int name;
   int price;
 
-  Data({this.creditId, this.name, this.price});
+  Data({this.id, this.name, this.price});
 
   Data.fromJson(Map<String, dynamic> json) {
-    creditId = json['credit_id'];
+    id = json['id'];
     name = json['name'];
     price = json['price'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['credit_id'] = this.creditId;
+    data['id'] = this.id;
     data['name'] = this.name;
     data['price'] = this.price;
     return data;

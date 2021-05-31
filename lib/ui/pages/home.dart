@@ -8,8 +8,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/models/category.dart';
 import 'package:quizapp/repository/categoryrepository.dart';
+import 'package:quizapp/ui/Model/AnnouncementModel.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/Model/GetquizbyUserModel.dart';
+import 'package:quizapp/ui/Model/getusercreditModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
@@ -57,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: tintorange,
+        backgroundColor: Colors.white,
         key: scaffoldKey,
         // appBar: AppBar(
         //   title: Text('OpenTrivia'),
@@ -68,14 +70,31 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           // expandedHeight: MediaQuery.of(context).size.height * 0.15,
           // pinned: false,
-          title: Text(
-            "Balance: \$10 Credits",
-            style: TextStyle(
-              color: Colors.white,
-              //fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
+          title:  FutureBuilder<getUserCredit>(
+              future: API.getCredit(uid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container ( child: Text( snapshot.data.credit.toString() == null ? '0 Credit' : 'Balance :' +  snapshot.data.credit.toString() + 'Credit' , style: TextStyle(
+                      color: titleColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),)
+
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner
+                return Container(
+                  child: Text(
+                    '0 Credit',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                );
+              }),
           actions: <Widget>[
             Padding(
               padding:
@@ -133,14 +152,14 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Stack(
                   children: [
-                        Container(
-                          color: tintorange,
-                          height: 50,
-                        ),
+                    Container(
+                      color: tintorange,
+                      height: 50,
+                    ),
                     Column(
                       children: [
                         Container(
-                          height: 50,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.vertical(
@@ -149,7 +168,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Container(
-                          height: MediaQuery.of(context).size.height / 2,
+                          color: Colors.white,
+                          height: MediaQuery.of(context).size.height / 2.2,
                           child: FutureBuilder<GetQuizModel>(
                               future: API.getQuiz(),
                               builder: (context, snapshot) {
@@ -160,54 +180,93 @@ class _HomePageState extends State<HomePage> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(left: 20 , right: 20 , top: 10),
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20, top: 5),
                                           child: InkWell(
-                                            onTap: (){
-                                             var quizid= snapshot.data.data[index].id;
-                                             AuthenticationPage.prefs.setInt('quizid', quizid);
-                                             print(quizid);
+                                            onTap: () {
+                                              var quizid =
+                                                  snapshot.data.data[index].id;
+                                              AuthenticationPage.prefs
+                                                  .setInt('quizid', quizid);
+                                              print(quizid);
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => QuizDetailPage(userid:quizid)),
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        QuizDetailPage(
+                                                            userid: quizid)),
                                               );
-
                                             },
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  border: Border.all(color: tintorange)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color: tintorange)),
                                               height: 100,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   ClipRRect(
-                                                    borderRadius: BorderRadius.circular(8.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
                                                     child: CachedNetworkImage(
                                                       height: 150.0,
                                                       width: 120.0,
-                                                      imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                                                      imageUrl:
+                                                          "${snapshot.data.data[index].image} ",
+                                                      // imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
                                                       fit: BoxFit.fitHeight,
-                                                      placeholder: (context, url) => Center(child: new CircularProgressIndicator()),
-                                                      errorWidget: (context, url, error) => new Icon(Icons.error),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width * 0.2,
-                                                    child: Text(snapshot.data.data[index].name,
-                                                      style: TextStyle(fontSize: 11),
-                                                      maxLines: 2,
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          Center(
+                                                              child:
+                                                                  new CircularProgressIndicator()),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          new Icon(Icons.error),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 20, left: 30),
                                                     child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Container(
-                                                          width: MediaQuery.of(context).size.width * 0.2,
-                                                          child: Text("Time is:  ${snapshot.data.data[index].time}"),
+                                                        Text(
+                                                          snapshot.data
+                                                              .data[index].name,
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                          maxLines: 2,
                                                         ),
-                                                        Container(child: Text("Prize:  ${snapshot.data.data[index].prize}\$")),
+                                                        Text(
+                                                          "Prize:  ${snapshot.data.data[index].prize}\$",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        Text(
+                                                          "Category:  ${snapshot.data.data[index].name}\$",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        Text(
+                                                          "Time to Complete:  ${snapshot.data.data[index].time}",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -227,44 +286,50 @@ class _HomePageState extends State<HomePage> {
                                     highlightColor: Colors.white,
                                     child: Container(
                                       color: Colors.black,
-                                      height: MediaQuery.of(context).size.height,
+                                      height:
+                                          MediaQuery.of(context).size.height,
                                     ));
                               }),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  All_Quiz()),
+                              MaterialPageRoute(
+                                  builder: (context) => All_Quiz()),
                             );
-
                           },
                           child: Container(
                             height: 30,
-                            padding: EdgeInsets.only(bottom: 0, left: 20, right: 20),
-                            width: MediaQuery.of(context).size.width/1.12,
+                            padding:
+                                EdgeInsets.only(bottom: 0, left: 20, right: 20),
+                            width: MediaQuery.of(context).size.width / 1.12,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(color: tintorange)
-                            ),
-                              child: Center(
-                                child: Text(
-                                  "List All",
-                                  style: TextStyle(color: Colors.blueAccent[300]),
-                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(color: tintorange)),
+                            child: Center(
+                              child: Text(
+                                "List All",
+                                style: TextStyle(color: Colors.blueAccent[300]),
                               ),
                             ),
+                          ),
                         ),
 
                         Container(
                           color: Colors.white,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              top: 10,
+                            ),
                             child: Text(
-                              "My Quiz",
+                              "My Quizzes",
                               style: TextStyle(
                                 color: titleColor,
                                 fontSize: 20,
@@ -274,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Container(
-                          height: MediaQuery.of(context).size.height / 5,
+                          height: MediaQuery.of(context).size.height / 7,
                           child: FutureBuilder<getquizbyuseridModel>(
                               future: API.UserQuiz(uid),
                               builder: (context, snapshot) {
@@ -285,39 +350,53 @@ class _HomePageState extends State<HomePage> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(left: 20 , right: 20 , top: 10),
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20, top: 10),
                                           child: InkWell(
-                                            onTap: (){
-                                              var quizid= snapshot.data.data[index].id;
-                                              AuthenticationPage.prefs.setInt('quizid', quizid);
+                                            onTap: () {
+                                              var quizid =
+                                                  snapshot.data.data[index].id;
+                                              AuthenticationPage.prefs
+                                                  .setInt('quizid', quizid);
                                               print(quizid);
                                               // Navigator.push(
                                               //   context,
                                               //   MaterialPageRoute(builder: (context) => QuizDetailPage(userid:quizid)),
                                               // );
-
                                             },
                                             child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  border: Border.all(color: tintorange)),
-                                              height: 100,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                    child: CachedNetworkImage(
-                                                      height: 150.0,
-                                                      width: 120.0,
-                                                      imageUrl: snapshot.data.data[index].image ,
-                                                      fit: BoxFit.fitHeight,
-                                                      placeholder: (context, url) => Center(child: new CircularProgressIndicator()),
-                                                      errorWidget: (context, url, error) => new Icon(Icons.error),
-                                                    ),
+                                              // decoration: BoxDecoration(
+                                              //     borderRadius: BorderRadius.circular(0),
+                                              //     border: Border.all(color: tintorange)),
+                                              // height: 60,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                        color: tintorange)),
+                                                height: 80,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: CachedNetworkImage(
+                                                    height: 120.0,
+                                                    width: 100.0,
+                                                    imageUrl: snapshot
+                                                        .data.data[index].image,
+                                                    fit: BoxFit.fitHeight,
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        Center(
+                                                            child:
+                                                                new CircularProgressIndicator()),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        new Icon(Icons.error),
                                                   ),
-
-                                                ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -333,7 +412,8 @@ class _HomePageState extends State<HomePage> {
                                     highlightColor: Colors.white,
                                     child: Container(
                                       color: Colors.black,
-                                      height: MediaQuery.of(context).size.height,
+                                      height:
+                                          MediaQuery.of(context).size.height,
                                     ));
                               }),
                         ),
@@ -372,10 +452,12 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           color: Colors.white,
                           child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Container(
-                              height: 100,
-                              padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 10),
+                            child:
+                            Container(
+                              height: 80,
+                              padding: EdgeInsets.only(top: 0, right: 20 , left: 20),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -395,24 +477,41 @@ class _HomePageState extends State<HomePage> {
                                     padding: EdgeInsets.only(top: 10),
                                     height: 100,
                                     width: 200,
-                                    child: AutoSizeText(
-                                      "Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                      maxLines: 3,
-                                    ),
+                                    child: FutureBuilder<getAnouncement>(
+                                        future: API.getAnnouncement(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Container ( child: Text(snapshot.data.anouncement == null ? 'Announcement' : snapshot.data.anouncement)
+
+                                            );
+                                          } else if (snapshot.hasError) {
+                                            return Text("${snapshot.error}");
+                                          }
+
+                                          // By default, show a loading spinner
+                                          return Container(
+                                            child: Text(
+                                              'name',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          );
+                                        }),
                                   )
                                 ],
                               ),
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 50,
+                        )
                       ],
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
@@ -504,8 +603,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }
 
 class QuizWidget extends StatelessWidget {
@@ -530,9 +627,11 @@ class QuizWidget extends StatelessWidget {
               child: CachedNetworkImage(
                 height: 150.0,
                 width: 120.0,
-                imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                imageUrl:
+                    "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
                 fit: BoxFit.fitHeight,
-                placeholder: (context, url) => Center(child: new CircularProgressIndicator()),
+                placeholder: (context, url) =>
+                    Center(child: new CircularProgressIndicator()),
                 errorWidget: (context, url, error) => new Icon(Icons.error),
               ),
             ),

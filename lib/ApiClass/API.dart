@@ -10,7 +10,9 @@ import 'package:quizapp/ui/Model/GetquizbyUserModel.dart';
 import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
 import 'package:quizapp/ui/Model/PurchaseHistoryModel.dart';
 import 'package:quizapp/ui/Model/getuserModel.dart';
+import 'package:quizapp/ui/Model/AnnouncementModel.dart';
 import 'package:quizapp/ui/Model/getcreditModel.dart';
+import 'package:quizapp/ui/Model/getusercreditModel.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/home.dart';
 import 'package:quizapp/ui/pages/login.dart';
@@ -332,9 +334,55 @@ class API {
     try {
       final http.Response response =
           await http.get(Global.baseurl + "get_credits");
-
+          print(response.statusCode);
+          print(response.body);
       if (response.statusCode == 201) {
         return getCreditModel.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
+    }
+  }
+
+
+  static Future<getAnouncement> getAnnouncement() async {
+    try {
+      final http.Response response =
+          await http.get(Global.baseurl + "get_announcement");
+  print(response.statusCode);
+  print(response.body);
+      if (response.statusCode == 201) {
+        return getAnouncement.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
+    }
+  }
+
+  static Future<getUserCredit> getCredit(id) async {
+    try {
+      final http.Response response =
+          await http.get(Global.baseurl + "get_user_credit/$id");
+          print(response.statusCode);
+          print(response.body);
+      if (response.statusCode == 201) {
+        return getUserCredit.fromJson(jsonDecode(response.body));
       }
     }
     // on SocketException catch (e) {

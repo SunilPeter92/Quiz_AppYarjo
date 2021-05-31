@@ -35,6 +35,7 @@ class _QuizPageState extends State<QuizPage> {
     color: Colors.black,
   );
   CountDownController _controller = CountDownController();
+  CountDownController _controller1 = CountDownController();
   int currentIndex = 0;
   final Map<int, dynamic> _answers = {};
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -42,24 +43,13 @@ class _QuizPageState extends State<QuizPage> {
   bool onlyquestion;
   int t;
 
-  countDown(){
-    Future.doWhile(()async {
-      //this changes the value by -1 every second until it reaches zero
-      await Future.delayed(Duration(seconds: 1),);
-      setState(() {
-        //add text widget in your build method which takes t as the data
-        t--;
-      });
-      return t!=0;
-    });
-  }
+
 
 
   @override
   void initState() {
     onlyquestion = false;
     t = widget.timer;
-    countDown();
     super.initState();
   }
 
@@ -79,7 +69,7 @@ class _QuizPageState extends State<QuizPage> {
       options.add(question.wrong1);
       options.add(question.wrong2);
       options.add(question.wrong3);
-      options.shuffle();
+      // options.shuffle();
     }
 
     return WillPopScope(
@@ -91,139 +81,209 @@ class _QuizPageState extends State<QuizPage> {
           title: Text('Quiz Page'),
           elevation: 0,
         ),
-        body: SingleChildScrollView(
-
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
-             // overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned(
-                  top: -80,
-                  left: 0,
-                  right: 0,
-                  bottom: 220,
-                  child: Center(
-                    child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(50)
-                        ),
-                        child: Center(
-                            child: CircularCountDownTimer(duration : t , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: false,
-                              isReverseAnimation: false, fillColor: tintorange, ringColor: Colors.blueAccent,   )
-                        )
-                      //CountdownTimer(controller: widget.controller),
-
-                    ),
-                  ),
-                ),
-                ClipPath(
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+           // overflow: Overflow.visible,
+            children: <Widget>[
+              Positioned(
+                top: 60,
+                left: 200,
+                right: 0,
+                bottom: 220,
+                child: Center(
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: tintorange,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50)
                       ),
-                    ),
-                    height: MediaQuery.of(context).size.height * 0.35,
+                      child: Center(
+                          child: CircularCountDownTimer(duration : widget.timer , initialDuration: 0, controller: _controller1,width: 80, height: 80,isReverse: false,
+                            isReverseAnimation: false, fillColor: tintorange, ringColor: Colors.blueAccent, onComplete: _Submit,   )
+                      )
+                    //CountdownTimer(controller: widget.controller),
+
                   ),
                 ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 85.0, bottom: 16, left: 16, right: 16),
-                    child: SizedBox(
-                      height: 600,
-                      child: Column(
-                        children: <Widget>[
-                          StackQuestionWithVideoandImage(
-                            questions: widget.questions,
-                             controller: t,
-                            currentIndex: currentIndex,
-                            // timer: widget.timer
-                          ),
-                          SizedBox(height: 10),
+              ),
+              ClipPath(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: tintorange,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.35,
+                ),
+              ),
+        // Stack(
+        //   overflow: Overflow.visible,
+        //   children: [
+        //     Positioned(
+        //       child: StackQuestionWithVideoandImage(
+        //         questions: widget.questions,
+        //         controller: t,
+        //         currentIndex: currentIndex,
+        //         // timer: widget.timer
+        //       ),
+        //     ),
+        //     Positioned(
+        //         top: -60,
+        //         left: 200,
+        //         right: 0,
+        //         bottom: 220,
+        //       child: Center(
+        //         child: Container(
+        //           height: 100,
+        //           width: 100,
+        //           decoration: BoxDecoration(
+        //             color: Colors.white,
+        //             borderRadius: BorderRadius.circular(50)
+        //           ),
+        //             child: Center(
+        //                 child: CircularCountDownTimer(duration : t , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
+        //                   isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
+        //             )
+        //         //CountdownTimer(controller: widget.controller),
+        //
+        //     ),
+        //       ),
+        //     ),
+        //
+        //   ],
+        // ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 16, left: 16, right: 16),
+                  child: SizedBox(
+                    height: 650,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 70,),
+                        Stack(
+                          overflow: Overflow.visible,
+                          children: [
+                            Positioned(
+                              child: StackQuestionWithVideoandImage(
+                                questions: widget.questions,
+                                controller: t,
+                                currentIndex: currentIndex,
+                                // timer: widget.timer
+                              ),
+                            ),
+                            Positioned(
+                              top: -60,
+                              left: 200,
+                              right: 0,
+                              bottom: 220,
+                              child: Center(
+                                child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(50)
+                                    ),
+                                    child: Center(
+                                        child: CircularCountDownTimer(duration : widget.timer , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
+                                          isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
+                                    )
+                                  //CountdownTimer(controller: widget.controller),
 
-                          SizedBox(
-                            height: 200,
-                            child: ListView(children: [
-
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 30,
-                                  left: 10,
-                                  right: 10,
                                 ),
-                                child: ExpansionTile(
-                                  title: Text(
-                                    _answers[currentIndex] == null
-                                        ? 'Select Answer'
-                                        : '${_answers[currentIndex]}',
-                                    style: TextStyle(fontSize: 17),
-                                  ),
-                                  children: [
-                                    ...options.map(
-                                      (option) => Card(
-                                        child: RadioListTile(
-                                          title: SizedBox(
-                                            width: 250,
-                                            child: Text(
-                                              HtmlUnescape().convert("$option"),
-                                              style: MediaQuery.of(context)
-                                                          .size
-                                                          .width >
-                                                      800
-                                                  ? TextStyle(fontSize: 30.0)
-                                                  : null,
-                                            ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                        // StackQuestionWithVideoandImage(
+                        //   questions: widget.questions,
+                        //    controller: t,
+                        //   currentIndex: currentIndex,
+                        //   // timer: widget.timer
+                        // ),
+                        SizedBox(height: 10),
+
+                        SizedBox(
+                          height: 200,
+                          child: ListView(children: [
+
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 30,
+                                left: 10,
+                                right: 10,
+                              ),
+                              child: ExpansionTile(
+                                title: Text(
+                                  _answers[currentIndex] == null
+                                      ? 'Select Answer'
+                                      : '${_answers[currentIndex]}',
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                                children: [
+                                  ...options.map(
+                                    (option) => Card(
+                                      child: RadioListTile(
+                                        title: SizedBox(
+                                          width: 250,
+                                          child: Text(
+                                            HtmlUnescape().convert("$option"),
+                                            style: MediaQuery.of(context)
+                                                        .size
+                                                        .width >
+                                                    800
+                                                ? TextStyle(fontSize: 30.0)
+                                                : null,
                                           ),
-                                          groupValue: _answers[currentIndex],
-                                          value: option,
-                                          onChanged: (value) {
-                                            setState(
-                                              () {
-                                                _answers[currentIndex] = option;
-                                              },
-                                            );
-                                          },
                                         ),
+                                        groupValue: _answers[currentIndex],
+                                        value: option,
+                                        onChanged: (value) {
+                                          setState(
+                                            () {
+                                              _answers[currentIndex] = option;
+                                            },
+                                          );
+                                        },
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-
-                            ]),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            child: RaisedButton(
-                              padding: MediaQuery.of(context).size.width > 800
-                                  ? const EdgeInsets.symmetric(
-                                  vertical: 20.0, horizontal: 64.0)
-                                  : null,
-                              child: Text(
-                                currentIndex == (widget.questions.length - 1)
-                                    ? "Submit"
-                                    : "Next",
-                                style: MediaQuery.of(context).size.width > 800
-                                    ? TextStyle(fontSize: 30.0)
-                                    : null,
-                              ),
-                              onPressed: _nextSubmit,
                             ),
+
+                          ]),
+                        ),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          child: RaisedButton(
+                            padding: MediaQuery.of(context).size.width > 800
+                                ? const EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 64.0)
+                                : null,
+                            child: Text(
+                              currentIndex == (widget.questions.length - 1)
+                                  ? "Submit"
+                                  : "Next",
+                              style: MediaQuery.of(context).size.width > 800
+                                  ? TextStyle(fontSize: 30.0)
+                                  : null,
+                            ),
+                            onPressed: _nextSubmit,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -246,7 +306,7 @@ class _QuizPageState extends State<QuizPage> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => QuizFinishedPage(
-            getTime:  _controller.getTime(),
+            getTime:  _controller1.getTime(),
             questions: widget.questions,
             answers: _answers,
           ),
@@ -255,6 +315,21 @@ class _QuizPageState extends State<QuizPage> {
       // Navigator.pop(context);
       // Navigator.of(context).pushNamed(QuizSubmitPage.routeName);
     }
+  }
+  void _Submit() {
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => QuizFinishedPage(
+            getTime:  _controller1.getTime(),
+            questions: widget.questions,
+            answers: _answers,
+          ),
+        ),
+       );
+      // Navigator.pop(context);
+      // Navigator.of(context).pushNamed(QuizSubmitPage.routeName);
+
   }
 
   Future<bool> _onWillPop() async {

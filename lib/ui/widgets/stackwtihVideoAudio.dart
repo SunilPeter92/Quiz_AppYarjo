@@ -52,28 +52,28 @@ class _StackQuestionWithVideoandImageState extends State<StackQuestionWithVideoa
          //    child: Text('hello' ),
          //   ),
          // ),
-        Positioned(
-            top: -80,
-            left: 0,
-            right: 0,
-            bottom: 220,
-          child: Center(
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50)
-              ),
-                child: Center(
-                    child: CircularCountDownTimer(duration : widget.controller , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
-                      isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
-                )
-            //CountdownTimer(controller: widget.controller),
-
-        ),
-          ),
-        ),
+        // Positioned(
+        //     top: -60,
+        //     left: 200,
+        //     right: 0,
+        //     bottom: 220,
+        //   child: Center(
+        //     child: Container(
+        //       height: 100,
+        //       width: 100,
+        //       decoration: BoxDecoration(
+        //         color: Colors.white,
+        //         borderRadius: BorderRadius.circular(50)
+        //       ),
+        //         child: Center(
+        //             child: CircularCountDownTimer(duration : widget.controller , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
+        //               isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
+        //         )
+        //     //CountdownTimer(controller: widget.controller),
+        //
+        // ),
+        //   ),
+        // ),
       ],
     );
   }

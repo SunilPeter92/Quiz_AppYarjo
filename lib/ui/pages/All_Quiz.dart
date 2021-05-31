@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
+import 'package:quizapp/ui/Model/getusercreditModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
@@ -15,9 +16,15 @@ class All_Quiz extends StatefulWidget {
 
 class _All_QuizState extends State<All_Quiz> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  int uid;
+  @override
+  void initState() {
+    uid = AuthenticationPage.prefs.getInt('userID');
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       // backgroundColor: tintorange,
         key: scaffoldKey,
@@ -30,14 +37,31 @@ class _All_QuizState extends State<All_Quiz> {
           elevation: 0,
           // expandedHeight: MediaQuery.of(context).size.height * 0.15,
           // pinned: false,
-          title: Text(
-            "Balance: \$10 Credits",
-            style: TextStyle(
-              color: Colors.white,
-              //fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
+          title:FutureBuilder<getUserCredit>(
+              future: API.getCredit(uid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Credit' : 'Balance :' + snapshot.data.credit.toString() + 'Credit' , style: TextStyle(
+                  color: titleColor,
+                  fontSize: 16,
+                      fontWeight: FontWeight.bold),)
+
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner
+                return Container(
+                  child: Text(
+                    '0 Credit',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                );
+              }),
 
           // flexibleSpace: Stack(
           //   children: [

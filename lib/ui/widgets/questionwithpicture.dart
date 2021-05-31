@@ -37,15 +37,16 @@ class _QuestionWithPictureState extends State<QuestionWithPicture> {
       ),
       elevation: 10,
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .35,
+        height: MediaQuery.of(context).size.height * .4,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
 
             SizedBox(
-              height: 30,
+              height: 20,
             ),
-            Center(
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
               child: Text(
                 "Question ${widget.currentIndex + 1} / ${widget.questions.length} ",
                 style: TextStyle(
@@ -55,8 +56,9 @@ class _QuestionWithPictureState extends State<QuestionWithPicture> {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(left:20 , right: 20 , top: 10),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AutoSizeText(
                       HtmlUnescape().convert(
@@ -70,7 +72,7 @@ class _QuestionWithPictureState extends State<QuestionWithPicture> {
                       maxLines: 2,
                     ),
                     AspectRatio(
-                      aspectRatio: 2.0,
+                      aspectRatio: 1.3,
                       child: CachedNetworkImage(
                         imageUrl:
                             "${widget.questions[widget.currentIndex].image}",

@@ -133,7 +133,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                   child: Column(
                                     children: [
                                       Text(
-                                       " Name : ${ getQuiz.dataByID[0].name }",
+                                       " Name : ${ getQuiz.dataByID[0].name == null ? 'John' :getQuiz.dataByID[0].name }",
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600),
@@ -151,7 +151,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                             fontWeight: FontWeight.w600),
                                       ),
                                       Text(
-                                        " Price : ${getQuiz.dataByID[0].catName }" ,
+                                        " Category : ${getQuiz.dataByID[0].catName }" ,
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600),
@@ -160,10 +160,10 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(20),
+                                  padding: EdgeInsets.only(top: 20 , left: 20 , right: 20),
                                   child: Container(
                                     height: 200,
-                                    padding: EdgeInsets.all(20),
+                                    padding: EdgeInsets.only(top: 20 , left: 20 , right: 20),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius:
@@ -189,42 +189,43 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                         Container(
                                           width: 300,
                                           child: AutoSizeText(
-                                            "Lorem Ipsum flana dimkana Lorem Ipsum flana dimkanaLorem Ipsum flana dimkanaLorem Ipsum flana dimkanaLorem Ipsum flana dimkana Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana",
+                                            getQuiz.dataByID[0].description,
+                                         //   "Lorem Ipsum flana dimkana Lorem Ipsum flana dimkanaLorem Ipsum flana dimkanaLorem Ipsum flana dimkanaLorem Ipsum flana dimkana Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana Lorem Ipsum flana dimkana",
                                             style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 12,
                                             ),
-                                            maxLines: 6,
+                                            maxLines: 10,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Number of questions: ${ getQuiz.dataByID[0].noOfQues}",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        "Time to answer : ${ getQuiz.dataByID[0].time}",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      AutoSizeText(
-                                        "The quiz will be activated on the ${ getQuiz.dataByID[0].actTime}",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
+                                SizedBox(height: 10,),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Number of questions: ${ getQuiz.dataByID[0].noOfQues}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "Time to Complete : ${ getQuiz.dataByID[0].time}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    AutoSizeText(
+                                      "The quiz will be activated on the ${ getQuiz.dataByID[0].actTime}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
+                                SizedBox(height: 10,),
+
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -245,7 +246,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "Pay (5\$)",style: TextStyle(color: Colors.white),
+                                            " Price : ${getQuiz.dataByID[0].price }" ,style: TextStyle(color: Colors.white),
                                           ),
                                         ),
                                       ),
