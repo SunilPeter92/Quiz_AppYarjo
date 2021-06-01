@@ -10,9 +10,11 @@ import 'package:quizapp/models/category.dart';
 import 'package:quizapp/repository/categoryrepository.dart';
 import 'package:quizapp/ui/Model/AnnouncementModel.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
+import 'package:quizapp/ui/Model/GetTopQuizModel.dart';
 import 'package:quizapp/ui/Model/GetquizbyUserModel.dart';
 import 'package:quizapp/ui/Model/getusercreditModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
+import 'package:quizapp/ui/pages/SolvedQuizDetail.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
 import 'package:quizapp/ui/pages/quizDetailPage.dart';
 import 'package:quizapp/ui/pages/All_Quiz.dart';
@@ -170,11 +172,12 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           color: Colors.white,
                           height: MediaQuery.of(context).size.height / 2.2,
-                          child: FutureBuilder<GetQuizModel>(
-                              future: API.getQuiz(),
+                          child: FutureBuilder<getTopQuizModel>(
+                              future: API.getTopQuiz(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
                                       itemCount: snapshot.data.data.length,
                                       scrollDirection: Axis.vertical,
                                       itemBuilder:
@@ -194,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         QuizDetailPage(
-                                                            userid: quizid)),
+                                                            quizid: quizid)),
                                               );
                                             },
                                             child: Container(
@@ -252,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                                                                       .w500),
                                                         ),
                                                         Text(
-                                                          "Category:  ${snapshot.data.data[index].name}\$",
+                                                          "Category:  ${snapshot.data.data[index].catName}\$",
                                                           style: TextStyle(
                                                               fontSize: 12,
                                                               fontWeight:
@@ -359,10 +362,10 @@ class _HomePageState extends State<HomePage> {
                                               AuthenticationPage.prefs
                                                   .setInt('quizid', quizid);
                                               print(quizid);
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(builder: (context) => QuizDetailPage(userid:quizid)),
-                                              // );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => SolvedQuiz(quizid:quizid)),
+                                              );
                                             },
                                             child: Container(
                                               // decoration: BoxDecoration(

@@ -142,7 +142,7 @@ class _All_QuizState extends State<All_Quiz> {
                                               print(quizid);
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => QuizDetailPage(userid:quizid)),
+                                                MaterialPageRoute(builder: (context) => QuizDetailPage(quizid:quizid)),
                                               );
 
                                             },
@@ -152,41 +152,109 @@ class _All_QuizState extends State<All_Quiz> {
                                                   border: Border.all(color: tintorange)),
                                               height: 100,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   ClipRRect(
-                                                    borderRadius: BorderRadius.circular(8.0),
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        8.0),
                                                     child: CachedNetworkImage(
                                                       height: 150.0,
                                                       width: 120.0,
-                                                      imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                                                      imageUrl:
+                                                      "${snapshot.data.data[index].image} ",
+                                                      // imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
                                                       fit: BoxFit.fitHeight,
-                                                      placeholder: (context, url) => Center(child: new CircularProgressIndicator()),
-                                                      errorWidget: (context, url, error) => new Icon(Icons.error),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width * 0.2,
-                                                    child: Text(snapshot.data.data[index].name,
-                                                      style: TextStyle(fontSize: 11),
-                                                      maxLines: 2,
+                                                      placeholder: (context,
+                                                          url) =>
+                                                          Center(
+                                                              child:
+                                                              new CircularProgressIndicator()),
+                                                      errorWidget: (context,
+                                                          url, error) =>
+                                                      new Icon(Icons.error),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(right: 10),
+                                                    padding:
+                                                    const EdgeInsets.only(
+                                                        top: 20, left: 30),
                                                     child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
-                                                        Container(
-                                                          width: MediaQuery.of(context).size.width * 0.2,
-                                                          child: Text("Time is:  ${snapshot.data.data[index].time}"),
+                                                        Text(
+                                                          snapshot.data
+                                                              .data[index].name,
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500),
+                                                          maxLines: 2,
                                                         ),
-                                                        Container(child: Text("Prize:  ${snapshot.data.data[index].prize}\$")),
+                                                        Text(
+                                                          "Prize:  ${snapshot.data.data[index].prize}\$",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500),
+                                                        ),
+                                                        Text(
+                                                          "Category:  ${snapshot.data.data[index].catName}\$",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500),
+                                                        ),
+                                                        Text(
+                                                          "Time to Complete:  ${snapshot.data.data[index].time}",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
+                                              // Row(
+                                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              //   children: [
+                                              //     ClipRRect(
+                                              //       borderRadius: BorderRadius.circular(8.0),
+                                              //       child: CachedNetworkImage(
+                                              //         height: 150.0,
+                                              //         width: 120.0,
+                                              //         imageUrl: "https://bsmedia.business-standard.com/media-handler.php?mediaPath=https://bsmedia.business-standard.com/_media/bs/img/article/2019-11/03/full/1572796865-0693.jpg&width=1200",
+                                              //         fit: BoxFit.fitHeight,
+                                              //         placeholder: (context, url) => Center(child: new CircularProgressIndicator()),
+                                              //         errorWidget: (context, url, error) => new Icon(Icons.error),
+                                              //       ),
+                                              //     ),
+                                              //     Container(
+                                              //       width: MediaQuery.of(context).size.width * 0.2,
+                                              //       child: Text(snapshot.data.data[index].name,
+                                              //         style: TextStyle(fontSize: 11),
+                                              //         maxLines: 2,
+                                              //       ),
+                                              //     ),
+                                              //     Padding(
+                                              //       padding: const EdgeInsets.only(right: 10),
+                                              //       child: Column(
+                                              //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              //         children: [
+                                              //           Container(
+                                              //             width: MediaQuery.of(context).size.width * 0.2,
+                                              //             child: Text("Time is:  ${snapshot.data.data[index].time}"),
+                                              //           ),
+                                              //           Container(child: Text("Prize:  ${snapshot.data.data[index].prize}\$")),
+                                              //         ],
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                             ),
                                           ),
                                         );

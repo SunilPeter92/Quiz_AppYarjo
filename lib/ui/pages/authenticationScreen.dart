@@ -38,9 +38,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
         Container(
-          child: Text(
-            "Logo Here",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+          child: Image.asset(
+            'assets/icons/Logo.jpeg',
+            height: 60,
+            width: 150,
           ),
         ),
         Padding(

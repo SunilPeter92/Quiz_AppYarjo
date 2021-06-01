@@ -45,10 +45,11 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 30,),
                 Container(
-                  child: Text(
-                    "Logo Here",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  child:  Image.asset(
+                    'assets/icons/Logo.jpeg',
+                    width: 150,
                   ),
                 ),
                 Padding(

@@ -1,9 +1,9 @@
-class GetQuizModel {
+class getTopQuizModel {
   List<Data> data;
 
-  GetQuizModel({this.data});
+  getTopQuizModel({this.data});
 
-  GetQuizModel.fromJson(Map<String, dynamic> json) {
+  getTopQuizModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = new List<Data>();
       json['data'].forEach((v) {

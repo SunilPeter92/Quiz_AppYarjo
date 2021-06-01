@@ -52,11 +52,10 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                child: Text(
-                  "Logo Here",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
+              Image.asset(
+                'assets/icons/Logo.jpeg',
+                height: 60,
+                width: 150,
               ),
               Padding(
                 padding: const EdgeInsets.only(

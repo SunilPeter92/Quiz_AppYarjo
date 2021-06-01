@@ -6,8 +6,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quizapp/GlobalClass/Global.dart';
 import 'package:quizapp/ui/Model/GetQuizModel.dart';
 import 'package:quizapp/ui/Model/GetQuizbyID.dart';
+import 'package:quizapp/ui/Model/GetTopQuizModel.dart';
 import 'package:quizapp/ui/Model/GetquizbyUserModel.dart';
+import 'package:quizapp/ui/Model/GetsSolvedQuizModel.dart';
 import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
+import 'package:quizapp/ui/Model/PayQuizModel.dart';
 import 'package:quizapp/ui/Model/PurchaseHistoryModel.dart';
 import 'package:quizapp/ui/Model/getuserModel.dart';
 import 'package:quizapp/ui/Model/AnnouncementModel.dart';
@@ -270,6 +273,26 @@ class API {
       throw Exception("Unknown Error");
     }
   }
+  static Future<getTopQuizModel> getTopQuiz() async {
+    try {
+      final http.Response response =
+          await http.get(Global.baseurl + "get_top_quiz");
+
+      if (response.statusCode == 201) {
+        return getTopQuizModel.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
+    }
+  }
 
   static Future<LeaderBoardModel> leader(userid, quiz_id, percent, time) async {
     http.Response response = await http.post(
@@ -396,4 +419,95 @@ class API {
       throw Exception("Unknown Error");
     }
   }
+
+  static Future<String> BuyCredit( BuildContext context,
+      String user_id,
+      String amount)
+  async {
+    http.Response response = await http.post(
+      Global.baseurl + "add_credit_to_wallet",
+      body: ({
+        "user_id": user_id.toString(),
+        "credit": amount.toString(),
+      }),
+    );
+    print(response.body);
+    print(response.statusCode);
+    return response.statusCode.toString();
+  }
+
+
+  static Future<GetSolvedQuizModel> SolvedQuizDetail(userid) async {
+    http.Response response = await http.post(
+      Global.baseurl + "get_quizes_by_quiz_id",
+      body: ({
+        "id": userid.toString(),
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      json.decode(response.body);
+      return GetSolvedQuizModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  static Future<String> BuyQuiz(userid , credit) async {
+    http.Response response = await http.post(
+      Global.baseurl + "deduct_credit",
+      body: ({
+        "user_id": userid.toString(),
+        "credit": credit.toString(),
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      print(response.body);
+      json.decode(response.body);
+      return response.statusCode.toString(); ;
+    } else if (response.statusCode == 202) {
+      print(response.body);
+      json.decode(response.body);
+      return response.statusCode.toString();;
+    }
+  }
+
+
+  static Future<String> CheckQuiz(userid , quizid) async {
+    http.Response response = await http.post(
+      Global.baseurl + "play_quiz_by_user_id",
+      body: ({
+        "user_id": userid.toString(),
+        "quiz_id": quizid.toString(),
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      print(response.body);
+      print(response.statusCode);
+      json.decode(response.body);
+      return response.statusCode.toString(); ;
+    } else if (response.statusCode == 202) {
+      print(response.body);
+      json.decode(response.body);
+      return response.statusCode.toString();;
+    }
+  }
+
+
+  static Future<String> addQuiz(userid , quizid) async {
+    http.Response response = await http.post(
+      Global.baseurl + "add_toplay_quiz",
+      body: ({
+        "user_id": userid.toString(),
+        "quiz_id": quizid.toString(),
+      }),
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response.statusCode.toString();;
+
+  }
+
 }
