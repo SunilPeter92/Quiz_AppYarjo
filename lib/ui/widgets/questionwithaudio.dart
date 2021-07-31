@@ -45,13 +45,13 @@ class _QuestionWithAudioState extends State<QuestionWithAudio>
     );
     audioPlayer = new AudioPlayer();
     audioCache = new AudioCache(fixedPlayer: audioPlayer);
-    audioPlayer.durationHandler = (d) => setState(() {
-          _duration = d;
-        });
-
-    audioPlayer.positionHandler = (p) => setState(() {
-          _position = p;
-        });
+    // audioPlayer.durationHandler = (d) => setState(() {
+    //       _duration = d;
+    //     });
+    //
+    // audioPlayer.positionHandler = (p) => setState(() {
+    //       _position = p;
+    //     });
   }
 
   @override

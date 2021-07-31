@@ -34,6 +34,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
   bool processing;
   int uid;
   int Status = 0;
+  var Time;
 
   @override
   void initState() {
@@ -278,24 +279,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
                                           )
                                         : InkWell(
                                             onTap: () {
-                                             var formatedTime = DateTime.parse(getQuiz.dataByID[0].actTime.toString());
-                                             var currentTime = DateTime.now();
-                                             var diff = currentTime.difference(formatedTime).inHours;
-                                             print(diff);
-                                             if(diff == 0){
-                                               var time = getQuiz
-                                                   .dataByID[0].time
-                                                   .toString();
-                                               int _startTime = int.parse(
-                                                   time.split(":")[0]) *
-                                                   60;
-                                               _startQuiz(_startTime);
-                                             }
-                                             else{
-                                               Fluttertoast.showToast(
-                                                   msg: '${diff} hours Left ', toastLength: Toast.LENGTH_SHORT);
-                                             }
-
+                                              gettime(getQuiz.dataByID[0].actTime , getQuiz.dataByID[0].time);
                                             },
                                             child: Container(
                                               height: 35,
@@ -420,7 +404,7 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
       processing = true;
     });
     try {
-      List<Question> questions = await getQuestions(1, 10, 'easy');
+      List<Question> questions = await getQuestions(2, 10, 'easy');
       // await getQuestions(widget.category, _noOfQuestions, _difficulty);
       Navigator.pop(context);
       if (questions.length < 1) {
@@ -479,4 +463,42 @@ class _QuizDetailPageState extends State<QuizDetailPage> {
             }
         });
   }
+
+
+  gettime(time , quiztime){
+    Time = DateTime.parse(time.toString());
+     var timenow = DateTime.now();
+     print(timenow);
+    //  var diff = timenow.difference(Time).inDays;
+    //  return diff.toString() ;
+    Duration difference = Time.difference(timenow);
+    print(difference);
+    if (difference.inDays > 8) {
+      return Time;
+    }  else if (difference.inDays >= 2) {
+      print(difference.inDays);
+      return   Fluttertoast.showToast(
+          msg: " '${difference.inDays} days left'", toastLength: Toast.LENGTH_LONG);
+    } else if  (difference.inHours >= 2) {
+      print(difference.inHours);
+
+      return Fluttertoast.showToast(
+          msg: "'${difference.inHours} hours left'", toastLength: Toast.LENGTH_LONG);
+    } else if (difference.inMinutes >= 2) {
+      print(difference.inMinutes);
+
+      return Fluttertoast.showToast(
+          msg: '${difference.inMinutes} minutes left', toastLength: Toast.LENGTH_LONG);
+    } else if (difference.inSeconds >= 3) {
+      print(difference.inSeconds);
+
+      return Fluttertoast.showToast(
+          msg: '${difference.inSeconds} seconds left', toastLength: Toast.LENGTH_LONG);
+    } else if (difference.isNegative ) {
+      print(quiztime);
+      int _startTime = int.parse(quiztime.split(":")[0]) * 60;
+      _startQuiz(_startTime);
+    }
+  }
 }
+

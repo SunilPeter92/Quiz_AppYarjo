@@ -41,7 +41,7 @@ class _All_QuizState extends State<All_Quiz> {
               future: API.getCredit(uid),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Credit' : 'Balance :' + snapshot.data.credit.toString() + 'Credit' , style: TextStyle(
+                  return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Cr' : 'Balance : ' + snapshot.data.credit.toString() + ' Cr' , style: TextStyle(
                   color: titleColor,
                   fontSize: 16,
                       fontWeight: FontWeight.bold),)
@@ -54,7 +54,7 @@ class _All_QuizState extends State<All_Quiz> {
                 // By default, show a loading spinner
                 return Container(
                   child: Text(
-                    '0 Credit',
+                    '0 Cr',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
@@ -199,7 +199,7 @@ class _All_QuizState extends State<All_Quiz> {
                                                                   .w500),
                                                         ),
                                                         Text(
-                                                          "Category:  ${snapshot.data.data[index].catName}\$",
+                                                          "Category:  ${snapshot.data.data[index].catName}",
                                                           style: TextStyle(
                                                               fontSize: 12,
                                                               fontWeight:

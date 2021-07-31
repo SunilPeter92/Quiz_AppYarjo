@@ -386,7 +386,7 @@ class _EditAccountState extends State<EditAccount> {
                      color: Colors.lightBlue[100],
                      onPressed: () {},
                      child: Text(
-                       "Privacy Policy and Data Protection",
+                       "Privacy Policy and Disclaimer",
                        style: TextStyle(
                          color: Colors.black,
                          fontWeight: FontWeight.bold,

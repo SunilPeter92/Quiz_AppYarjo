@@ -78,212 +78,215 @@ class _QuizPageState extends State<QuizPage> {
         key: _key,
         appBar: AppBar(
           backgroundColor: tintorange,
-          title: Text('Quiz Page'),
+          title: Text('Quiz'),
           elevation: 0,
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-           // overflow: Overflow.visible,
-            children: <Widget>[
-              Positioned(
-                top: 60,
-                left: 200,
-                right: 0,
-                bottom: 220,
-                child: Center(
-                  child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50)
-                      ),
-                      child: Center(
-                          child: CircularCountDownTimer(duration : widget.timer , initialDuration: 0, controller: _controller1,width: 80, height: 80,isReverse: false,
-                            isReverseAnimation: false, fillColor: tintorange, ringColor: Colors.blueAccent, onComplete: _Submit,   )
-                      )
-                    //CountdownTimer(controller: widget.controller),
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+             // overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  top: 60,
+                  left: 200,
+                  right: 0,
+                  bottom: 230,
+                  child: Center(
+                    child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50)
+                        ),
+                        child: Center(
+                            child: CircularCountDownTimer(duration : widget.timer , initialDuration: 0, controller: _controller1,width: 80, height: 80,isReverse: false,
+                              isReverseAnimation: false, fillColor: tintorange, ringColor: Colors.blueAccent, onComplete: _Submit,   )
+                        )
+                      //CountdownTimer(controller: widget.controller),
 
-                  ),
-                ),
-              ),
-              ClipPath(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: tintorange,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
                     ),
                   ),
-                  height: MediaQuery.of(context).size.height * 0.35,
                 ),
-              ),
-        // Stack(
-        //   overflow: Overflow.visible,
-        //   children: [
-        //     Positioned(
-        //       child: StackQuestionWithVideoandImage(
-        //         questions: widget.questions,
-        //         controller: t,
-        //         currentIndex: currentIndex,
-        //         // timer: widget.timer
-        //       ),
-        //     ),
-        //     Positioned(
-        //         top: -60,
-        //         left: 200,
-        //         right: 0,
-        //         bottom: 220,
-        //       child: Center(
-        //         child: Container(
-        //           height: 100,
-        //           width: 100,
-        //           decoration: BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.circular(50)
-        //           ),
-        //             child: Center(
-        //                 child: CircularCountDownTimer(duration : t , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
-        //                   isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
-        //             )
-        //         //CountdownTimer(controller: widget.controller),
-        //
-        //     ),
-        //       ),
-        //     ),
-        //
-        //   ],
-        // ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8.0, bottom: 16, left: 16, right: 16),
-                  child: SizedBox(
-                    height: 650,
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 70,),
-                        Stack(
-                          overflow: Overflow.visible,
-                          children: [
-                            Positioned(
-                              child: StackQuestionWithVideoandImage(
-                                questions: widget.questions,
-                                controller: t,
-                                currentIndex: currentIndex,
-                                // timer: widget.timer
-                              ),
-                            ),
-                            Positioned(
-                              top: -60,
-                              left: 200,
-                              right: 0,
-                              bottom: 220,
-                              child: Center(
-                                child: Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(50)
-                                    ),
-                                    child: Center(
-                                        child: CircularCountDownTimer(duration : widget.timer , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
-                                          isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
-                                    )
-                                  //CountdownTimer(controller: widget.controller),
-
+                ClipPath(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: tintorange,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
+                    ),
+                    height: MediaQuery.of(context).size.height * 0.35,
+                  ),
+                ),
+          // Stack(
+          //   overflow: Overflow.visible,
+          //   children: [
+          //     Positioned(
+          //       child: StackQuestionWithVideoandImage(
+          //         questions: widget.questions,
+          //         controller: t,
+          //         currentIndex: currentIndex,
+          //         // timer: widget.timer
+          //       ),
+          //     ),
+          //     Positioned(
+          //         top: -60,
+          //         left: 200,
+          //         right: 0,
+          //         bottom: 220,
+          //       child: Center(
+          //         child: Container(
+          //           height: 100,
+          //           width: 100,
+          //           decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             borderRadius: BorderRadius.circular(50)
+          //           ),
+          //             child: Center(
+          //                 child: CircularCountDownTimer(duration : t , initialDuration: 0, controller: _controller,width: 80, height: 80,isReverse: true,
+          //                   isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
+          //             )
+          //         //CountdownTimer(controller: widget.controller),
+          //
+          //     ),
+          //       ),
+          //     ),
+          //
+          //   ],
+          // ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                          left: 16, right: 16),
+                    child: SizedBox(
+                      height: 650,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 50,),
+                          Stack(
+                            overflow: Overflow.visible,
+                            children: [
+                              Positioned(
+                                child: StackQuestionWithVideoandImage(
+                                  questions: widget.questions,
+                                  controller: t,
+                                  currentIndex: currentIndex,
+                                  // timer: widget.timer
                                 ),
                               ),
-                            ),
+                              Positioned(
+                                top: -60,
+                                left: 200,
+                                right: 0,
+                                bottom: 250,
+                                child: Center(
+                                  child: Container(
+                                      height: 80,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(50)
+                                      ),
+                                      child: Center(
+                                          child: CircularCountDownTimer(duration : widget.timer , initialDuration: 0, controller: _controller,width: 60, height: 60,isReverse: true,
+                                            isReverseAnimation: true, fillColor: tintorange, ringColor: Colors.blueAccent,   )
+                                      )
+                                    //CountdownTimer(controller: widget.controller),
 
-                          ],
-                        ),
-                        // StackQuestionWithVideoandImage(
-                        //   questions: widget.questions,
-                        //    controller: t,
-                        //   currentIndex: currentIndex,
-                        //   // timer: widget.timer
-                        // ),
-                        SizedBox(height: 10),
-
-                        SizedBox(
-                          height: 200,
-                          child: ListView(children: [
-
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 30,
-                                left: 10,
-                                right: 10,
-                              ),
-                              child: ExpansionTile(
-                                title: Text(
-                                  _answers[currentIndex] == null
-                                      ? 'Select Answer'
-                                      : '${_answers[currentIndex]}',
-                                  style: TextStyle(fontSize: 17),
+                                  ),
                                 ),
-                                children: [
-                                  ...options.map(
-                                    (option) => Card(
-                                      child: RadioListTile(
-                                        title: SizedBox(
-                                          width: 250,
-                                          child: Text(
-                                            HtmlUnescape().convert("$option"),
-                                            style: MediaQuery.of(context)
-                                                        .size
-                                                        .width >
-                                                    800
-                                                ? TextStyle(fontSize: 30.0)
-                                                : null,
+                              ),
+
+                            ],
+                          ),
+                          // StackQuestionWithVideoandImage(
+                          //   questions: widget.questions,
+                          //    controller: t,
+                          //   currentIndex: currentIndex,
+                          //   // timer: widget.timer
+                          // ),
+                          SizedBox(height: 10),
+
+                          SizedBox(
+                            height: 233,
+                            child: ListView(children: [
+
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 0,
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                child: ExpansionTile(
+                                  title: Text(
+                                    _answers[currentIndex] == null
+                                        ? 'Select Answer'
+                                        : '${_answers[currentIndex]}',
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                  children: [
+                                    ...options.map(
+                                      (option) => Card(
+                                        child: RadioListTile(
+                                          title: SizedBox(
+                                            width: 250,
+                                            child: Text(
+                                              HtmlUnescape().convert("$option"),
+                                              style: MediaQuery.of(context)
+                                                          .size
+                                                          .width >
+                                                      800
+                                                  ? TextStyle(fontSize: 30.0)
+                                                  : null,
+                                            ),
                                           ),
+                                          groupValue: _answers[currentIndex],
+                                          value: option,
+                                          onChanged: (value) {
+                                            setState(
+                                              () {
+                                                _answers[currentIndex] = option;
+                                              },
+                                            );
+                                          },
                                         ),
-                                        groupValue: _answers[currentIndex],
-                                        value: option,
-                                        onChanged: (value) {
-                                          setState(
-                                            () {
-                                              _answers[currentIndex] = option;
-                                            },
-                                          );
-                                        },
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
 
-                          ]),
-                        ),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          child: RaisedButton(
-                            padding: MediaQuery.of(context).size.width > 800
-                                ? const EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 64.0)
-                                : null,
-                            child: Text(
-                              currentIndex == (widget.questions.length - 1)
-                                  ? "Submit"
-                                  : "Next",
-                              style: MediaQuery.of(context).size.width > 800
-                                  ? TextStyle(fontSize: 30.0)
-                                  : null,
-                            ),
-                            onPressed: _nextSubmit,
+                            ]),
                           ),
-                        ),
-                      ],
+                          Spacer(),
+                          Container(
+                            alignment: Alignment.bottomCenter,
+                            child: RaisedButton(
+                              padding: MediaQuery.of(context).size.width > 800
+                                  ? const EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 64.0)
+                                  : null,
+                              child: Text(
+                                currentIndex == (widget.questions.length - 1)
+                                    ? "Submit"
+                                    : "Next",
+                                style: MediaQuery.of(context).size.width > 800
+                                    ? TextStyle(fontSize: 30.0)
+                                    : null,
+                              ),
+                              onPressed: _nextSubmit,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

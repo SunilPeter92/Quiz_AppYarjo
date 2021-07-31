@@ -96,7 +96,7 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               Text(
-                                                getQuiz.data.name == null ? 'John' : getQuiz.data.name,
+                                                getQuiz.status.name == null ? 'John' : getQuiz.status.name,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600),
@@ -113,7 +113,7 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               Text(
-                                               getQuiz.data.prize,
+                                               getQuiz.status.prize,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600),
@@ -130,7 +130,7 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               Text(
-                                                getQuiz.data.price,
+                                                getQuiz.status.price,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600),
@@ -138,22 +138,22 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                             ],
                                           ),
                                           SizedBox(height: 10,),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                " Category :",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w600),
-                                              ),
-                                              Text(
-                                               getQuiz.data.catName,
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w600),
-                                              ),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   children: [
+                                          //     Text(
+                                          //       " Category :",
+                                          //       style: TextStyle(
+                                          //           fontSize: 15,
+                                          //           fontWeight: FontWeight.w600),
+                                          //     ),
+                                          //     Text(
+                                          //      getQuiz.status.catName,
+                                          //       style: TextStyle(
+                                          //           fontSize: 15,
+                                          //           fontWeight: FontWeight.w600),
+                                          //     ),
+                                          //   ],
+                                          // ),
                                           SizedBox(height: 10,),
                                           Row(
                                             children: [
@@ -164,7 +164,7 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               Text(
-                                                getQuiz.data.noOfQues,
+                                                getQuiz.status.noOfQues,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600),
@@ -181,7 +181,7 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               Text(
-                                                getQuiz.data.time,
+                                                getQuiz.status.time,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600),
@@ -198,7 +198,7 @@ class _SolvedQuizState extends State<SolvedQuiz> {
                                                     fontWeight: FontWeight.w600),
                                               ),
                                               AutoSizeText(
-                                                "${getQuiz.data.percent} %",
+                                                "${getQuiz.status.percent} %",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600),

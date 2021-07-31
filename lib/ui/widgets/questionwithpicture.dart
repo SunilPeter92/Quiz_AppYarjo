@@ -56,7 +56,7 @@ class _QuestionWithPictureState extends State<QuestionWithPicture> {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(left:20 , right: 20 , top: 10),
+                padding: EdgeInsets.only(left:20 , right: 20 , top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -70,6 +70,9 @@ class _QuestionWithPictureState extends State<QuestionWithPicture> {
                             )
                           : _questionStyle,
                       maxLines: 2,
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     AspectRatio(
                       aspectRatio: 1.3,

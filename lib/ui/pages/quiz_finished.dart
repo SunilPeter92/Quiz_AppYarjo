@@ -28,7 +28,7 @@ class QuizFinishedPage extends StatelessWidget {
       if(this.questions[index].correctAnswer == value)
         correct++;
     });
-   var percent =  {correct/questions.length * 100 };
+   var percent =  correct/questions.length * 100 ;
     final TextStyle titleStyle = TextStyle(
       color: Colors.black87,
       fontSize: 16.0,
@@ -116,6 +116,7 @@ class QuizFinishedPage extends StatelessWidget {
               InkWell(
                 onTap: (){
                   API.leader(userId, quizId, percent, getTime).then((value) {
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Leaderboard(Response:value)),

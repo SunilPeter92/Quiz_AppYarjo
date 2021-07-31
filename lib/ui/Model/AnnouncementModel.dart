@@ -1,5 +1,5 @@
 class getAnouncement {
-  String anouncement;
+   String anouncement;
 
   getAnouncement({this.anouncement});
 

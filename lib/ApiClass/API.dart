@@ -43,6 +43,7 @@ class API {
         LoginPage.pr.hide();
         Navigator.of(context).pushNamed(HomePage.routeName);
       } else if (response.statusCode == 202) {
+        LoginPage.pr.hide();
         Fluttertoast.showToast(
             msg: "Email not Exit", toastLength: Toast.LENGTH_LONG);
       }
@@ -279,6 +280,7 @@ class API {
           await http.get(Global.baseurl + "get_top_quiz");
 
       if (response.statusCode == 201) {
+        print(response.body);
         return getTopQuizModel.fromJson(jsonDecode(response.body));
       }
     }
@@ -305,7 +307,13 @@ class API {
       }),
     );
     print(response.statusCode);
+    print(userid);
+    print(quiz_id);
+    print(percent);
+    print(time);
+
     if (response.statusCode == 201) {
+      print(response.body);
       json.decode(response.body);
       return LeaderBoardModel.fromJson(json.decode(response.body));
     } else {
@@ -315,19 +323,40 @@ class API {
 
 
 
+  // static Future<getquizbyuseridModel> UserQuz(userid) async {
+  //   http.Response response = await http.post(
+  //     Global.baseurl + "played_quiz_by_user_id/",
+  //     body: ({
+  //       "id": userid.toString(),
+  //     }),
+  //   );
+  //   print(response.statusCode);
+  //   if (response.statusCode == 201) {
+  //     json.decode(response.body);
+  //     return getquizbyuseridModel.fromJson(json.decode(response.body));
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
   static Future<getquizbyuseridModel> UserQuiz(userid) async {
-    http.Response response = await http.post(
-      Global.baseurl + "get_quizes_by_user_id",
-      body: ({
-        "id": userid.toString(),
-      }),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 201) {
-      json.decode(response.body);
-      return getquizbyuseridModel.fromJson(json.decode(response.body));
-    } else {
-      return null;
+    try {
+      final http.Response response =
+      await http.get(Global.baseurl + "played_quiz_by_user_id/$userid");
+
+      if (response.statusCode == 201) {
+        return getquizbyuseridModel.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
     }
   }
 
@@ -437,19 +466,25 @@ class API {
   }
 
 
-  static Future<GetSolvedQuizModel> SolvedQuizDetail(userid) async {
-    http.Response response = await http.post(
-      Global.baseurl + "get_quizes_by_quiz_id",
-      body: ({
-        "id": userid.toString(),
-      }),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 201) {
-      json.decode(response.body);
-      return GetSolvedQuizModel.fromJson(json.decode(response.body));
-    } else {
-      return null;
+
+  static Future<GetSolvedQuizModel> SolvedQuizDetail(quizid) async {
+    try {
+      final http.Response response =
+      await http.get(Global.baseurl + "played_quiz_by_quiz_id/$quizid");
+
+      if (response.statusCode == 201) {
+        return GetSolvedQuizModel.fromJson(jsonDecode(response.body));
+      }
+    }
+    // on SocketException catch (e) {
+    //   throw NoInternetExceptions("No Internet", "assets/internet.png");
+    // } on HttpException catch (e) {
+    //   throw HttpException("No Service found");
+    // } on FormatException catch (e) {
+    //   throw InvalidDataFormat("Invalid Data format");
+    // }
+    catch (e) {
+      throw Exception("Unknown Error");
     }
   }
 

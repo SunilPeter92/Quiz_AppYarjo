@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
               future: API.getCredit(uid),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Container ( child: Text( snapshot.data.credit.toString() == null ? '0 Credit' : 'Balance :' +  snapshot.data.credit.toString() + 'Credit' , style: TextStyle(
+                  return Container ( child: Text( snapshot.data.credit.toString() == null ? '0 Cr' : 'Balance : ' +  snapshot.data.credit.toString() + ' Cr' , style: TextStyle(
                       color: titleColor,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),)
@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                                                                       .w500),
                                                         ),
                                                         Text(
-                                                          "Category:  ${snapshot.data.data[index].catName}\$",
+                                                          "Category:  ${snapshot.data.data[index].catName}",
                                                           style: TextStyle(
                                                               fontSize: 12,
                                                               fontWeight:
@@ -294,9 +294,9 @@ class _HomePageState extends State<HomePage> {
                                     ));
                               }),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -348,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return ListView.builder(
-                                      itemCount: snapshot.data.data.length,
+                                      itemCount: snapshot.data.status.length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder:
                                           (BuildContext context, int index) {
@@ -358,9 +358,9 @@ class _HomePageState extends State<HomePage> {
                                           child: InkWell(
                                             onTap: () {
                                               var quizid =
-                                                  snapshot.data.data[index].id;
-                                              AuthenticationPage.prefs
-                                                  .setInt('quizid', quizid);
+                                                  snapshot.data.status[index].id;
+                                              // AuthenticationPage.prefs
+                                              //     .setInt('quizid', quizid);
                                               print(quizid);
                                               Navigator.push(
                                                 context,
@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                                                     height: 120.0,
                                                     width: 100.0,
                                                     imageUrl: snapshot
-                                                        .data.data[index].image,
+                                                        .data.status[index].image,
                                                     fit: BoxFit.fitHeight,
                                                     placeholder: (context,
                                                             url) =>

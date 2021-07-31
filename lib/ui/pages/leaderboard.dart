@@ -5,6 +5,7 @@ import 'package:quizapp/ApiClass/API.dart';
 import 'package:quizapp/ui/Model/LeaderBoardModel.dart';
 import 'package:quizapp/ui/constant/constcolor.dart';
 import 'package:quizapp/ui/pages/authenticationScreen.dart';
+import 'package:quizapp/ui/pages/home.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Leaderboard extends StatefulWidget {
@@ -71,7 +72,7 @@ class _LeaderboardState extends State<Leaderboard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                  widget.Response.myData.percent + "%",
+                  widget.Response.myData.percent  + "%",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -145,15 +146,15 @@ class _LeaderboardState extends State<Leaderboard> {
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Text(
-                                                  widget.Response.otherData[index].name,
+                                                  widget.Response.otherData[index].name == null ? 'null' : widget.Response.otherData[index].name,
                                                   style: TextStyle(fontSize: 15),
                                                 ),
                                                 Text(
-                                                widget.Response.otherData[index].time,
+                                                widget.Response.otherData[index].time == null ? 'null ' :  widget.Response.otherData[index].time,
                                                   style: TextStyle(fontSize: 15),
                                                 ),
                                                 Text(
-                                                  widget.Response.otherData[index].percent + "%",
+                                                  widget.Response.otherData[index].percent + "%" == null ? 'null ' :  widget.Response.otherData[index].percent,
                                                   style: TextStyle(fontSize: 15),
                                                 ),
                                               ],
@@ -166,6 +167,22 @@ class _LeaderboardState extends State<Leaderboard> {
                     ),
                   ),
                 ),
+                SizedBox(height: 30,),
+                InkWell(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(HomePage.routeName);
+                  } ,
+                  child: Container(
+                    height: 55,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.blue[400],
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(child: Text('Goto Home')),
+                  ),
+                ),
+
               ],
             ),
           ],

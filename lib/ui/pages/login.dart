@@ -81,8 +81,14 @@ class _LoginPageState extends State<LoginPage> {
                         child: TextFormField(
                           controller: emailController,
                           validator: (text) {
+                            const pattern = "^[a-zA-Z0-9.!#%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*";
+                            final regExp = RegExp(pattern);
+
                             if (text == null || text.isEmpty) {
                               return "enter email";
+                            }
+                            else if (!regExp.hasMatch(text)) {
+                              return 'Please enter correct email address';
                             }
                             return null;
                           },

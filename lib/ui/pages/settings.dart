@@ -99,7 +99,7 @@ class _SettingsState extends State<Settings> {
                               future: API.getCredit(uid),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Credit' :'Balance :' + snapshot.data.credit.toString() + 'Credit' ,style: TextStyle(
+                                  return Container ( child: Text(  snapshot.data.credit.toString() == null ? '0 Cr' :'Balance :' + snapshot.data.credit.toString() + 'Cr' ,style: TextStyle(
                                       color: titleColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),)
@@ -112,7 +112,7 @@ class _SettingsState extends State<Settings> {
                                 // By default, show a loading spinner
                                 return Container(
                                   child: Text(
-                                    '0 Credit',
+                                    '0 Cr',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 15,
@@ -258,7 +258,7 @@ class _SettingsState extends State<Settings> {
                                     .pushNamed(ChangePassword.routeName);
                               },
                               child: Text(
-                                "Change a PW",
+                                "Change PW",
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -281,7 +281,7 @@ class _SettingsState extends State<Settings> {
                       color: Colors.lightBlue[100],
                       onPressed: () {},
                       child: Text(
-                        "Privacy Policy and Data Protection",
+                        "Privacy Policy and Disclaimer",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
